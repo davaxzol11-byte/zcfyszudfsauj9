@@ -1,0 +1,278 @@
+/* Steam and Particle Effects */
+
+/* Steam particles container */
+.steam-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Individual steam particle */
+.steam-particle {
+    position: absolute;
+    bottom: -50px;
+    width: 3px;
+    height: 50px;
+    background: linear-gradient(to top,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    filter: blur(2px);
+    animation: steam-rise 8s ease-in infinite;
+    opacity: 0;
+}
+
+@keyframes steam-rise {
+    0% {
+        transform: translateY(0) translateX(0) scaleY(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-600px) translateX(50px) scaleY(2);
+        opacity: 0;
+    }
+}
+
+/* Stagger steam particles */
+.steam-particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 7s; }
+.steam-particle:nth-child(2) { left: 25%; animation-delay: 1.5s; animation-duration: 8s; }
+.steam-particle:nth-child(3) { left: 40%; animation-delay: 3s; animation-duration: 6.5s; }
+.steam-particle:nth-child(4) { left: 55%; animation-delay: 0.8s; animation-duration: 7.5s; }
+.steam-particle:nth-child(5) { left: 70%; animation-delay: 2.2s; animation-duration: 8.5s; }
+.steam-particle:nth-child(6) { left: 85%; animation-delay: 1.2s; animation-duration: 7.2s; }
+
+/* Floating particles (snow/sparkles) */
+.floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: float-particle 15s linear infinite;
+    opacity: 0;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(-10px) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Generate particles with different delays and positions */
+.particle:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 12s; }
+.particle:nth-child(2) { left: 15%; animation-delay: 2s; animation-duration: 14s; }
+.particle:nth-child(3) { left: 25%; animation-delay: 4s; animation-duration: 13s; }
+.particle:nth-child(4) { left: 35%; animation-delay: 1s; animation-duration: 15s; }
+.particle:nth-child(5) { left: 45%; animation-delay: 3s; animation-duration: 11s; }
+.particle:nth-child(6) { left: 55%; animation-delay: 5s; animation-duration: 16s; }
+.particle:nth-child(7) { left: 65%; animation-delay: 2.5s; animation-duration: 12.5s; }
+.particle:nth-child(8) { left: 75%; animation-delay: 4.5s; animation-duration: 13.5s; }
+.particle:nth-child(9) { left: 85%; animation-delay: 1.5s; animation-duration: 14.5s; }
+.particle:nth-child(10) { left: 95%; animation-delay: 3.5s; animation-duration: 15.5s; }
+
+/* Hover steam effect for sauna cards */
+.sauna-card:hover .steam-overlay {
+    opacity: 1;
+}
+
+.steam-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    animation: steam-wave 3s ease-in-out infinite;
+}
+
+@keyframes steam-wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Preloader with steam effect */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2C2416 0%, #1A1A1A 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.preloader-logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 30px;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(212, 165, 116, 0.5));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(212, 165, 116, 0.8));
+        transform: scale(1.05);
+    }
+}
+
+.preloader-text {
+    color: #D4A574;
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.preloader-bar {
+    width: 200px;
+    height: 3px;
+    background: rgba(212, 165, 116, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.preloader-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #D4A574, #FFD700, #D4A574);
+    background-size: 200% 100%;
+    animation: loading-progress 2s ease-in-out infinite;
+    border-radius: 10px;
+}
+
+@keyframes loading-progress {
+    0% {
+        width: 0%;
+        background-position: 0% 50%;
+    }
+    50% {
+        width: 70%;
+        background-position: 100% 50%;
+    }
+    100% {
+        width: 100%;
+        background-position: 0% 50%;
+    }
+}
+
+/* Floating booking button */
+.floating-booking-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    background: linear-gradient(135deg, #D4A574 0%, #B8895E 100%);
+    color: white;
+    padding: 18px 32px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 10px 40px rgba(212, 165, 116, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: float-btn 3s ease-in-out infinite;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.floating-booking-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(212, 165, 116, 0.6);
+}
+
+@keyframes float-btn {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fire-flicker {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, #D4A574, #FFD700);
+    z-index: 9998;
+    transition: width 0.1s ease;
+    box-shadow: 0 2px 10px rgba(212, 165, 116, 0.5);
+}

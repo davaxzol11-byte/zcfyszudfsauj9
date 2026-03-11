@@ -1,0 +1,28 @@
+{
+  "admins": [
+    7482384212
+  ],
+  "whitelist": [
+    7482384212
+  ],
+  "pending": [],
+  "banned": [],
+  "workerStats": {},
+  "bookings": {},
+  "linkCreators": {},
+  "cityNames": {},
+  "workerInfo": {},
+  "registrationDates": {
+    "7482384212": "2026-03-11T00:00:00.000Z"
+  },
+  "userStates": {},
+  "broadcastSettings": {
+    "trainingLink": "https://t.me/+X-Aso8evvSY5MGJi",
+    "rulesLink": "https://t.me/+X-Aso8evvSY5MGJi",
+    "paymentsLink": "https://t.me/+X-Aso8evvSY5MGJi",
+    "chatLink": "https://t.me/+X-Aso8evvSY5MGJi"
+  },
+  "customTags": {},
+  "balances": {},
+  "withdrawalRequests": []
+}
