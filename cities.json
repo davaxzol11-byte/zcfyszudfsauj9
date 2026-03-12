@@ -3,1484 +3,1484 @@
     "name": "Москва",
     "address": "г. Москва, ул. Примерная, 1",
     "coordinates": { "lat": 55.751244, "lon": 37.618423 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   },
   "saint-petersburg": {
     "name": "Санкт-Петербург",
     "address": "г. Санкт-Петербург, ул. Невская, 10",
     "coordinates": { "lat": 59.934280, "lon": 30.335099 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "novosibirsk": {
     "name": "Новосибирск",
     "address": "г. Новосибирск, ул. Ленина, 5",
     "coordinates": { "lat": 55.030204, "lon": 82.920430 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "ekaterinburg": {
     "name": "Екатеринбург",
     "address": "г. Екатеринбург, ул. Малышева, 15",
     "coordinates": { "lat": 56.838011, "lon": 60.597474 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "kazan": {
     "name": "Казань",
     "address": "г. Казань, ул. Баумана, 20",
     "coordinates": { "lat": 55.796127, "lon": 49.106414 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "nizhny-novgorod": {
     "name": "Нижний Новгород",
     "address": "г. Нижний Новгород, ул. Большая Покровская, 30",
     "coordinates": { "lat": 56.326887, "lon": 44.006516 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "chelyabinsk": {
     "name": "Челябинск",
     "address": "г. Челябинск, ул. Кирова, 25",
     "coordinates": { "lat": 55.159902, "lon": 61.402554 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "samara": {
     "name": "Самара",
     "address": "г. Самара, ул. Ленинградская, 40",
     "coordinates": { "lat": 53.195878, "lon": 50.100202 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "omsk": {
     "name": "Омск",
     "address": "г. Омск, ул. Ленина, 12",
     "coordinates": { "lat": 54.989347, "lon": 73.368221 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "rostov-na-donu": {
     "name": "Ростов-на-Дону",
     "address": "г. Ростов-на-Дону, пр. Буденновский, 50",
     "coordinates": { "lat": 47.222078, "lon": 39.720358 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "ufa": {
     "name": "Уфа",
     "address": "г. Уфа, ул. Ленина, 25",
     "coordinates": { "lat": 54.735147, "lon": 55.958727 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "krasnoyarsk": {
     "name": "Красноярск",
     "address": "г. Красноярск, пр. Мира, 30",
     "coordinates": { "lat": 56.010563, "lon": 92.852572 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "perm": {
     "name": "Пермь",
     "address": "г. Пермь, ул. Ленина, 45",
     "coordinates": { "lat": 58.010455, "lon": 56.229443 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "voronezh": {
     "name": "Воронеж",
     "address": "г. Воронеж, пр. Революции, 20",
     "coordinates": { "lat": 51.660781, "lon": 39.200296 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "volgograd": {
     "name": "Волгоград",
     "address": "г. Волгоград, пр. Ленина, 15",
     "coordinates": { "lat": 48.708048, "lon": 44.516939 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "krasnodar": {
     "name": "Краснодар",
     "address": "г. Краснодар, ул. Красная, 35",
     "coordinates": { "lat": 45.035470, "lon": 38.975313 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "saratov": {
     "name": "Саратов",
     "address": "г. Саратов, пр. Кирова, 28",
     "coordinates": { "lat": 51.533562, "lon": 46.034266 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tyumen": {
     "name": "Тюмень",
     "address": "г. Тюмень, ул. Садовая, 73",
     "coordinates": { "lat": 57.152985, "lon": 65.541227 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tolyatti": {
     "name": "Тольятти",
     "address": "г. Тольятти, ул. Революционная, 18",
     "coordinates": { "lat": 53.507836, "lon": 49.420393 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "izhevsk": {
     "name": "Ижевск",
     "address": "г. Ижевск, ул. Пушкинская, 220",
     "coordinates": { "lat": 56.852593, "lon": 53.211463 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "barnaul": {
     "name": "Барнаул",
     "address": "г. Барнаул, пр. Ленина, 82",
     "coordinates": { "lat": 53.356220, "lon": 83.769363 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ulyanovsk": {
     "name": "Ульяновск",
     "address": "г. Ульяновск, ул. Гончарова, 25",
     "coordinates": { "lat": 54.314192, "lon": 48.403663 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "vladivostok": {
     "name": "Владивосток",
     "address": "г. Владивосток, ул. Светланская, 50",
     "coordinates": { "lat": 43.115141, "lon": 131.885341 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "yaroslavl": {
     "name": "Ярославль",
     "address": "г. Ярославль, ул. Кирова, 8",
     "coordinates": { "lat": 57.626559, "lon": 39.893813 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "irkutsk": {
     "name": "Иркутск",
     "address": "г. Иркутск, ул. Ленина, 15",
     "coordinates": { "lat": 52.286387, "lon": 104.280606 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "khabarovsk": {
     "name": "Хабаровск",
     "address": "г. Хабаровск, ул. Муравьева-Амурского, 20",
     "coordinates": { "lat": 48.480223, "lon": 135.071917 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "orenburg": {
     "name": "Оренбург",
     "address": "г. Оренбург, ул. Советская, 25",
     "coordinates": { "lat": 51.768199, "lon": 55.096955 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novokuznetsk": {
     "name": "Новокузнецк",
     "address": "г. Новокузнецк, пр. Металлургов, 10",
     "coordinates": { "lat": 53.757553, "lon": 87.136047 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ryazan": {
     "name": "Рязань",
     "address": "г. Рязань, ул. Почтовая, 45",
     "coordinates": { "lat": 54.629562, "lon": 39.736254 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "astrakhan": {
     "name": "Астрахань",
     "address": "г. Астрахань, ул. Советская, 15",
     "coordinates": { "lat": 46.347869, "lon": 48.033574 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "penza": {
     "name": "Пенза",
     "address": "г. Пенза, ул. Московская, 30",
     "coordinates": { "lat": 53.195063, "lon": 45.018316 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "lipetsk": {
     "name": "Липецк",
     "address": "г. Липецк, ул. Ленина, 25",
     "coordinates": { "lat": 52.610115, "lon": 39.599229 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kirov": {
     "name": "Киров",
     "address": "г. Киров, ул. Спасская, 40",
     "coordinates": { "lat": 58.603595, "lon": 49.668023 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "cheboksary": {
     "name": "Чебоксары",
     "address": "г. Чебоксары, пр. Ленина, 15",
     "coordinates": { "lat": 56.129042, "lon": 47.248718 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kaliningrad": {
     "name": "Калининград",
     "address": "г. Калининград, пр. Мира, 25",
     "coordinates": { "lat": 54.710157, "lon": 20.452380 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "bryansk": {
     "name": "Брянск",
     "address": "г. Брянск, пр. Ленина, 35",
     "coordinates": { "lat": 53.243562, "lon": 34.363407 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kursk": {
     "name": "Курск",
     "address": "г. Курск, ул. Ленина, 50",
     "coordinates": { "lat": 51.730361, "lon": 36.192647 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ivanovo": {
     "name": "Иваново",
     "address": "г. Иваново, пр. Ленина, 100",
     "coordinates": { "lat": 57.000348, "lon": 40.973921 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "magnitogorsk": {
     "name": "Магнитогорск",
     "address": "г. Магнитогорск, пр. Ленина, 80",
     "coordinates": { "lat": 53.407213, "lon": 58.979359 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tver": {
     "name": "Тверь",
     "address": "г. Тверь, ул. Советская, 33",
     "coordinates": { "lat": 56.859611, "lon": 35.911896 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tula": {
     "name": "Тула",
     "address": "г. Тула, пр. Ленина, 60",
     "coordinates": { "lat": 54.193122, "lon": 37.617348 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "stavropol": {
     "name": "Ставрополь",
     "address": "г. Ставрополь, пр. Карла Маркса, 90",
     "coordinates": { "lat": 45.044504, "lon": 41.969093 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "sochi": {
     "name": "Сочи",
     "address": "г. Сочи, ул. Навагинская, 12",
     "coordinates": { "lat": 43.585472, "lon": 39.723098 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "belgorod": {
     "name": "Белгород",
     "address": "г. Белгород, пр. Славы, 25",
     "coordinates": { "lat": 50.595414, "lon": 36.587277 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "surgut": {
     "name": "Сургут",
     "address": "г. Сургут, ул. Ленина, 38",
     "coordinates": { "lat": 61.254035, "lon": 73.396221 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "vladimir": {
     "name": "Владимир",
     "address": "г. Владимир, ул. Большая Московская, 27",
     "coordinates": { "lat": 56.129042, "lon": 40.406635 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "arhangelsk": {
     "name": "Архангельск",
     "address": "г. Архангельск, пр. Ломоносова, 30",
     "coordinates": { "lat": 64.539304, "lon": 40.516939 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "smolensk": {
     "name": "Смоленск",
     "address": "г. Смоленск, ул. Большая Советская, 15",
     "coordinates": { "lat": 54.782635, "lon": 32.045287 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tomsk": {
     "name": "Томск",
     "address": "г. Томск, пр. Ленина, 40",
     "coordinates": { "lat": 56.484680, "lon": 84.947649 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "kemerovo": {
     "name": "Кемерово",
     "address": "г. Кемерово, пр. Советский, 50",
     "coordinates": { "lat": 55.354968, "lon": 86.087314 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "murmansk": {
     "name": "Мурманск",
     "address": "г. Мурманск, пр. Ленина, 82",
     "coordinates": { "lat": 68.970663, "lon": 33.074918 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "yakutsk": {
     "name": "Якутск",
     "address": "г. Якутск, ул. Ленина, 24",
     "coordinates": { "lat": 62.034267, "lon": 129.675970 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "kaluga": {
     "name": "Калуга",
     "address": "г. Калуга, ул. Кирова, 1",
     "coordinates": { "lat": 54.513845, "lon": 36.261215 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "chita": {
     "name": "Чита",
     "address": "г. Чита, ул. Ленина, 85",
     "coordinates": { "lat": 52.033973, "lon": 113.499432 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "saransk": {
     "name": "Саранск",
     "address": "г. Саранск, ул. Советская, 34",
     "coordinates": { "lat": 54.187433, "lon": 45.183937 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "tambov": {
     "name": "Тамбов",
     "address": "г. Тамбов, ул. Советская, 118",
     "coordinates": { "lat": 52.721246, "lon": 41.452256 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "vladikavkaz": {
     "name": "Владикавказ",
     "address": "г. Владикавказ, пр. Мира, 15",
     "coordinates": { "lat": 43.036890, "lon": 44.668200 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "petrozavodsk": {
     "name": "Петрозаводск",
     "address": "г. Петрозаводск, пр. Ленина, 28",
     "coordinates": { "lat": 61.785087, "lon": 34.346645 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kostroma": {
     "name": "Кострома",
     "address": "г. Кострома, ул. Советская, 2",
     "coordinates": { "lat": 57.767683, "lon": 40.926858 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "nizhny-tagil": {
     "name": "Нижний Тагил",
     "address": "г. Нижний Тагил, пр. Ленина, 1",
     "coordinates": { "lat": 57.919199, "lon": 59.965091 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "sevastopol": {
     "name": "Севастополь",
     "address": "г. Севастополь, пр. Нахимова, 5",
     "coordinates": { "lat": 44.616650, "lon": 33.525367 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "simferopol": {
     "name": "Симферополь",
     "address": "г. Симферополь, ул. Пушкина, 12",
     "coordinates": { "lat": 44.952116, "lon": 34.102411 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "nalchik": {
     "name": "Нальчик",
     "address": "г. Нальчик, пр. Ленина, 27",
     "coordinates": { "lat": 43.498194, "lon": 43.618267 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "makhachkala": {
     "name": "Махачкала",
     "address": "г. Махачкала, пр. Расула Гамзатова, 50",
     "coordinates": { "lat": 42.983334, "lon": 47.504646 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "grozny": {
     "name": "Грозный",
     "address": "г. Грозный, пр. Путина, 10",
     "coordinates": { "lat": 43.317500, "lon": 45.698334 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "blagoveshchensk": {
     "name": "Благовещенск",
     "address": "г. Благовещенск, ул. Ленина, 180",
     "coordinates": { "lat": 50.290680, "lon": 127.527140 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "yoshkar-ola": {
     "name": "Йошкар-Ола",
     "address": "г. Йошкар-Ола, Ленинский пр., 24",
     "coordinates": { "lat": 56.634996, "lon": 47.890519 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "khanty-mansiysk": {
     "name": "Ханты-Мансийск",
     "address": "г. Ханты-Мансийск, ул. Мира, 14",
     "coordinates": { "lat": 61.004456, "lon": 69.001949 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "orsk": {
     "name": "Орск",
     "address": "г. Орск, пр. Ленина, 10",
     "coordinates": { "lat": 51.204720, "lon": 58.475347 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novorossiysk": {
     "name": "Новороссийск",
     "address": "г. Новороссийск, пр. Ленина, 7",
     "coordinates": { "lat": 44.723888, "lon": 37.768879 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "sterlitamak": {
     "name": "Стерлитамак",
     "address": "г. Стерлитамак, пр. Ленина, 72",
     "coordinates": { "lat": 53.624720, "lon": 55.950390 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "angarsk": {
     "name": "Ангарск",
     "address": "г. Ангарск, кв. 85, дом 10",
     "coordinates": { "lat": 52.544720, "lon": 103.888611 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "komsomolsk-na-amure": {
     "name": "Комсомольск-на-Амуре",
     "address": "г. Комсомольск-на-Амуре, пр. Ленина, 21",
     "coordinates": { "lat": 50.549723, "lon": 137.007500 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "balashikha": {
     "name": "Балашиха",
     "address": "г. Балашиха, ул. Советская, 20",
     "coordinates": { "lat": 55.796391, "lon": 37.938199 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "podolsk": {
     "name": "Подольск",
     "address": "г. Подольск, ул. Кирова, 3",
     "coordinates": { "lat": 55.424450, "lon": 37.554622 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "khimki": {
     "name": "Химки",
     "address": "г. Химки, ул. Московская, 21",
     "coordinates": { "lat": 55.889694, "lon": 37.429644 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "mytishchi": {
     "name": "Мытищи",
     "address": "г. Мытищи, ул. Мира, 32",
     "coordinates": { "lat": 55.911255, "lon": 37.730519 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "korolev": {
     "name": "Королёв",
     "address": "г. Королёв, пр. Космонавтов, 10",
     "coordinates": { "lat": 55.923256, "lon": 37.826500 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "lyubertsy": {
     "name": "Люберцы",
     "address": "г. Люберцы, Октябрьский пр., 200",
     "coordinates": { "lat": 55.677483, "lon": 37.893822 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "syktyvkar": {
     "name": "Сыктывкар",
     "address": "г. Сыктывкар, ул. Коммунистическая, 10",
     "coordinates": { "lat": 61.668797, "lon": 50.836497 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "bratsk": {
     "name": "Братск",
     "address": "г. Братск, ул. Мира, 35",
     "coordinates": { "lat": 56.151722, "lon": 101.634140 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "dzhankoy": {
     "name": "Джанкой",
     "address": "г. Джанкой, ул. Ленина, 8",
     "coordinates": { "lat": 45.712222, "lon": 34.392778 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "velikiy-novgorod": {
     "name": "Великий Новгород",
     "address": "г. Великий Новгород, ул. Большая Московская, 24",
     "coordinates": { "lat": 58.521853, "lon": 31.275421 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "pskov": {
     "name": "Псков",
     "address": "г. Псков, ул. Советская, 50",
     "coordinates": { "lat": 57.819365, "lon": 28.331786 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "biysk": {
     "name": "Бийск",
     "address": "г. Бийск, ул. Советская, 225",
     "coordinates": { "lat": 52.539167, "lon": 85.213333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "prokopyevsk": {
     "name": "Прокопьевск",
     "address": "г. Прокопьевск, ул. Ленина, 65",
     "coordinates": { "lat": 53.906111, "lon": 86.719444 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "balakovo": {
     "name": "Балаково",
     "address": "г. Балаково, ул. Ленина, 100",
     "coordinates": { "lat": 52.028611, "lon": 47.800278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "armavir": {
     "name": "Армавир",
     "address": "г. Армавир, ул. Ленина, 108",
     "coordinates": { "lat": 44.989444, "lon": 41.123889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "abakan": {
     "name": "Абакан",
     "address": "г. Абакан, ул. Ленина, 67",
     "coordinates": { "lat": 53.721152, "lon": 91.442387 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "neftekamsk": {
     "name": "Нефтекамск",
     "address": "г. Нефтекамск, ул. Ленина, 1",
     "coordinates": { "lat": 56.088333, "lon": 54.266667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "nefteyugansk": {
     "name": "Нефтеюганск",
     "address": "г. Нефтеюганск, 14 микрорайон, дом 40",
     "coordinates": { "lat": 61.099722, "lon": 72.613889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "shakhty": {
     "name": "Шахты",
     "address": "г. Шахты, пр. Победы Революции, 85",
     "coordinates": { "lat": 47.709444, "lon": 40.214722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "dzerzhinsk": {
     "name": "Дзержинск",
     "address": "г. Дзержинск, пр. Ленина, 56",
     "coordinates": { "lat": 56.239167, "lon": 43.458333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "nizhnekamsk": {
     "name": "Нижнекамск",
     "address": "г. Нижнекамск, пр. Мира, 50",
     "coordinates": { "lat": 55.636667, "lon": 51.820556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "orenburg": {
     "name": "Оренбург",
     "address": "г. Оренбург, ул. Советская, 60",
     "coordinates": { "lat": 51.768199, "lon": 55.096955 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "anapa": {
     "name": "Анапа",
     "address": "г. Анапа, ул. Крымская, 123",
     "coordinates": { "lat": 44.894958, "lon": 37.316353 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "nakhodka": {
     "name": "Находка",
     "address": "г. Находка, ул. Ленинская, 18",
     "coordinates": { "lat": 42.813889, "lon": 132.873611 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "ulan-ude": {
     "name": "Улан-Удэ",
     "address": "г. Улан-Удэ, ул. Ленина, 54",
     "coordinates": { "lat": 51.834167, "lon": 107.584722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "engels": {
     "name": "Энгельс",
     "address": "г. Энгельс, пл. Ленина, 1",
     "coordinates": { "lat": 51.483333, "lon": 46.116667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kamensk-uralsky": {
     "name": "Каменск-Уральский",
     "address": "г. Каменск-Уральский, пр. Победы, 55",
     "coordinates": { "lat": 56.415278, "lon": 61.920556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "volzhsky": {
     "name": "Волжский",
     "address": "г. Волжский, пр. Ленина, 350",
     "coordinates": { "lat": 48.785278, "lon": 44.775000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "taganrog": {
     "name": "Таганрог",
     "address": "г. Таганрог, ул. Петровская, 89",
     "coordinates": { "lat": 47.236111, "lon": 38.897500 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "nizhnevartovsk": {
     "name": "Нижневартовск",
     "address": "г. Нижневартовск, ул. Ленина, 2",
     "coordinates": { "lat": 60.934444, "lon": 76.553333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "yuzhno-sakhalinsk": {
     "name": "Южно-Сахалинск",
     "address": "г. Южно-Сахалинск, ул. Ленина, 173",
     "coordinates": { "lat": 46.959444, "lon": 142.738333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "petropavlovsk-kamchatsky": {
     "name": "Петропавловск-Камчатский",
     "address": "г. Петропавловск-Камчатский, пр. Рыбаков, 13",
     "coordinates": { "lat": 53.024444, "lon": 158.643333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   },
   "vologda": {
     "name": "Вологда",
     "address": "г. Вологда, ул. Мира, 34",
     "coordinates": { "lat": 59.220556, "lon": 39.891389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "cherepovets": {
     "name": "Череповец",
     "address": "г. Череповец, Советский пр., 35",
     "coordinates": { "lat": 59.133333, "lon": 37.900000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "vladimir": {
     "name": "Владимир",
     "address": "г. Владимир, ул. Большая Московская, 27",
     "coordinates": { "lat": 56.129042, "lon": 40.406635 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "saransk": {
     "name": "Саранск",
     "address": "г. Саранск, ул. Советская, 34",
     "coordinates": { "lat": 54.187433, "lon": 45.183937 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kurgan": {
     "name": "Курган",
     "address": "г. Курган, ул. Гоголя, 56",
     "coordinates": { "lat": 55.450000, "lon": 65.333333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "oryol": {
     "name": "Орёл",
     "address": "г. Орёл, ул. Ленина, 1",
     "coordinates": { "lat": 52.970278, "lon": 36.064444 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "podolsk": {
     "name": "Подольск",
     "address": "г. Подольск, ул. Кирова, 3",
     "coordinates": { "lat": 55.424450, "lon": 37.554622 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "norilsk": {
     "name": "Норильск",
     "address": "г. Норильск, ул. Ленина, 23",
     "coordinates": { "lat": 69.355278, "lon": 88.189167 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   },
   "zlatoust": {
     "name": "Златоуст",
     "address": "г. Златоуст, пр. Гагарина, 3-я линия, 3",
     "coordinates": { "lat": 55.171389, "lon": 59.650833 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "syzran": {
     "name": "Сызрань",
     "address": "г. Сызрань, ул. Советская, 48",
     "coordinates": { "lat": 53.157778, "lon": 48.468889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novocherkassk": {
     "name": "Новочеркасск",
     "address": "г. Новочеркасск, пр. Платовский, 59",
     "coordinates": { "lat": 47.421389, "lon": 40.093056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kamyshin": {
     "name": "Камышин",
     "address": "г. Камышин, ул. Октябрьская, 55",
     "coordinates": { "lat": 50.098333, "lon": 45.416111 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novomoskovsk": {
     "name": "Новомосковск",
     "address": "г. Новомосковск, ул. Комсомольская, 35",
     "coordinates": { "lat": 54.010000, "lon": 38.283333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "achinsk": {
     "name": "Ачинск",
     "address": "г. Ачинск, ул. Ленина, 90",
     "coordinates": { "lat": 56.269444, "lon": 90.499167 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "pervouralsk": {
     "name": "Первоуральск",
     "address": "г. Первоуральск, ул. Ватутина, 45",
     "coordinates": { "lat": 56.908333, "lon": 59.943889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "rubtsovsk": {
     "name": "Рубцовск",
     "address": "г. Рубцовск, пр. Ленина, 144",
     "coordinates": { "lat": 51.500000, "lon": 81.200000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "miass": {
     "name": "Миасс",
     "address": "г. Миасс, пр. Автозаводцев, 55",
     "coordinates": { "lat": 55.045000, "lon": 60.108333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "elektrostal": {
     "name": "Электросталь",
     "address": "г. Электросталь, пр. Ленина, 2",
     "coordinates": { "lat": 55.789444, "lon": 38.446389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "kolpino": {
     "name": "Колпино",
     "address": "г. Колпино, бул. Трудящихся, 24",
     "coordinates": { "lat": 59.750000, "lon": 30.590278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "kolomna": {
     "name": "Коломна",
     "address": "г. Коломна, ул. Октябрьской Революции, 354",
     "coordinates": { "lat": 55.078889, "lon": 38.778333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "kovrov": {
     "name": "Ковров",
     "address": "г. Ковров, ул. Абельмана, 86",
     "coordinates": { "lat": 56.358056, "lon": 41.319167 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "murom": {
     "name": "Муром",
     "address": "г. Муром, ул. Ленина, 15",
     "coordinates": { "lat": 55.575000, "lon": 42.043056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "noginsk": {
     "name": "Ногинск",
     "address": "г. Ногинск, ул. Рабочая, 10",
     "coordinates": { "lat": 55.865556, "lon": 38.443889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "serpukhov": {
     "name": "Серпухов",
     "address": "г. Серпухов, ул. Советская, 87",
     "coordinates": { "lat": 54.915833, "lon": 37.411111 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "shchelkovo": {
     "name": "Щёлково",
     "address": "г. Щёлково, ул. Советская, 1",
     "coordinates": { "lat": 55.921111, "lon": 37.998333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "orekhovo-zuevo": {
     "name": "Орехово-Зуево",
     "address": "г. Орехово-Зуево, ул. Ленина, 97",
     "coordinates": { "lat": 55.806944, "lon": 38.961667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "krasnogorsk": {
     "name": "Красногорск",
     "address": "г. Красногорск, ул. Ленина, 1",
     "coordinates": { "lat": 55.820278, "lon": 37.330556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "odintsovo": {
     "name": "Одинцово",
     "address": "г. Одинцово, ул. Маршала Жукова, 29",
     "coordinates": { "lat": 55.679722, "lon": 37.282222 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "ramenskoye": {
     "name": "Раменское",
     "address": "г. Раменское, ул. Советская, 6",
     "coordinates": { "lat": 55.567500, "lon": 38.226944 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "zhukovsky": {
     "name": "Жуковский",
     "address": "г. Жуковский, ул. Гагарина, 1",
     "coordinates": { "lat": 55.595833, "lon": 38.120000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "pushkino": {
     "name": "Пушкино",
     "address": "г. Пушкино, Московский пр., 12",
     "coordinates": { "lat": 56.011944, "lon": 37.854722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "dolgoprudny": {
     "name": "Долгопрудный",
     "address": "г. Долгопрудный, Лихачёвский пр., 70",
     "coordinates": { "lat": 55.939167, "lon": 37.513889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "reutov": {
     "name": "Реутов",
     "address": "г. Реутов, ул. Ленина, 1",
     "coordinates": { "lat": 55.760556, "lon": 37.855833 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "dimitrovgrad": {
     "name": "Димитровград",
     "address": "г. Димитровград, пр. Ленина, 2",
     "coordinates": { "lat": 54.214167, "lon": 49.618333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kamensk-shakhtinsky": {
     "name": "Каменск-Шахтинский",
     "address": "г. Каменск-Шахтинский, пр. Карла Маркса, 42",
     "coordinates": { "lat": 48.317778, "lon": 40.263333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "noyabrsk": {
     "name": "Ноябрьск",
     "address": "г. Ноябрьск, ул. Ленина, 37",
     "coordinates": { "lat": 63.198889, "lon": 75.450000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "pyatigorsk": {
     "name": "Пятигорск",
     "address": "г. Пятигорск, пр. Кирова, 61",
     "coordinates": { "lat": 44.048889, "lon": 43.059722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ozersk": {
     "name": "Озёрск",
     "address": "г. Озёрск, пр. Ленина, 48",
     "coordinates": { "lat": 55.755556, "lon": 60.703056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novocheboksarsk": {
     "name": "Новочебоксарск",
     "address": "г. Новочебоксарск, ул. Винокурова, 14",
     "coordinates": { "lat": 56.115000, "lon": 47.478333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "berezniki": {
     "name": "Березники",
     "address": "г. Березники, пр. Ленина, 48",
     "coordinates": { "lat": 59.408889, "lon": 56.820278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "salavat": {
     "name": "Салават",
     "address": "г. Салават, ул. Ленина, 2",
     "coordinates": { "lat": 53.361111, "lon": 55.925000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "oktyabrsky": {
     "name": "Октябрьский",
     "address": "г. Октябрьский, ул. Ленина, 32",
     "coordinates": { "lat": 54.481111, "lon": 53.471389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "rybinsk": {
     "name": "Рыбинск",
     "address": "г. Рыбинск, ул. Крестовая, 77",
     "coordinates": { "lat": 58.050000, "lon": 38.858333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "severodvinsk": {
     "name": "Северодвинск",
     "address": "г. Северодвинск, ул. Ломоносова, 85",
     "coordinates": { "lat": 64.563333, "lon": 39.830556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "novotroitsk": {
     "name": "Новотроицк",
     "address": "г. Новотроицк, ул. Советская, 80",
     "coordinates": { "lat": 51.203889, "lon": 58.332778 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kyzyl": {
     "name": "Кызыл",
     "address": "г. Кызыл, ул. Ленина, 1",
     "coordinates": { "lat": 51.719444, "lon": 94.443889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "elista": {
     "name": "Элиста",
     "address": "г. Элиста, ул. Ленина, 249",
     "coordinates": { "lat": 46.307778, "lon": 44.270000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "magadan": {
     "name": "Магадан",
     "address": "г. Магадан, пр. Ленина, 16",
     "coordinates": { "lat": 59.563889, "lon": 150.803333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   },
   "gelendzhik": {
     "name": "Геленджик",
     "address": "г. Геленджик, ул. Революционная, 1",
     "coordinates": { "lat": 44.561111, "lon": 38.076667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "tuapse": {
     "name": "Туапсе",
     "address": "г. Туапсе, ул. Карла Маркса, 1",
     "coordinates": { "lat": 44.096944, "lon": 39.075000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "yalta": {
     "name": "Ялта",
     "address": "г. Ялта, ул. Морская, 1",
     "coordinates": { "lat": 44.495278, "lon": 34.166389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "evpatoria": {
     "name": "Евпатория",
     "address": "г. Евпатория, ул. Фрунзе, 1",
     "coordinates": { "lat": 45.190278, "lon": 33.366667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "kerch": {
     "name": "Керчь",
     "address": "г. Керчь, ул. Ленина, 20",
     "coordinates": { "lat": 45.356944, "lon": 36.470556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "feodosia": {
     "name": "Феодосия",
     "address": "г. Феодосия, пр. Айвазовского, 15",
     "coordinates": { "lat": 45.031667, "lon": 35.381944 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "alushta": {
     "name": "Алушта",
     "address": "г. Алушта, ул. Ленина, 2",
     "coordinates": { "lat": 44.673056, "lon": 34.410278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "kislovodsk": {
     "name": "Кисловодск",
     "address": "г. Кисловодск, пр. Мира, 11",
     "coordinates": { "lat": 43.908333, "lon": 42.720833 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "essentuki": {
     "name": "Ессентуки",
     "address": "г. Ессентуки, ул. Вокзальная, 10",
     "coordinates": { "lat": 44.044444, "lon": 42.859722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "mineralnye-vody": {
     "name": "Минеральные Воды",
     "address": "г. Минеральные Воды, пр. Карла Маркса, 60",
     "coordinates": { "lat": 44.210556, "lon": 43.136111 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "zheleznogorsk": {
     "name": "Железногорск",
     "address": "г. Железногорск, ул. Ленина, 56",
     "coordinates": { "lat": 56.251111, "lon": 93.532222 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ussuriysk": {
     "name": "Уссурийск",
     "address": "г. Уссурийск, ул. Ленина, 100",
     "coordinates": { "lat": 43.801389, "lon": 131.950000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "artyom": {
     "name": "Артём",
     "address": "г. Артём, ул. Кирова, 48",
     "coordinates": { "lat": 43.360000, "lon": 132.188889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "berdsk": {
     "name": "Бердск",
     "address": "г. Бердск, ул. Ленина, 70",
     "coordinates": { "lat": 54.758333, "lon": 83.096667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kansk": {
     "name": "Канск",
     "address": "г. Канск, ул. Ленина, 5",
     "coordinates": { "lat": 56.201389, "lon": 95.703611 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novosibirsk": {
     "name": "Новосибирск",
     "address": "г. Новосибирск, ул. Ленина, 5",
     "coordinates": { "lat": 55.030204, "lon": 82.920430 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "syzran": {
     "name": "Сызрань",
     "address": "г. Сызрань, ул. Советская, 48",
     "coordinates": { "lat": 53.157778, "lon": 48.468889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novocherkassk": {
     "name": "Новочеркасск",
     "address": "г. Новочеркасск, пр. Платовский, 59",
     "coordinates": { "lat": 47.421389, "lon": 40.093056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kamyshin": {
     "name": "Камышин",
     "address": "г. Камышин, ул. Октябрьская, 55",
     "coordinates": { "lat": 50.098333, "lon": 45.416111 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novomoskovsk": {
     "name": "Новомосковск",
     "address": "г. Новомосковск, ул. Комсомольская, 35",
     "coordinates": { "lat": 54.010000, "lon": 38.283333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "achinsk": {
     "name": "Ачинск",
     "address": "г. Ачинск, ул. Ленина, 90",
     "coordinates": { "lat": 56.269444, "lon": 90.499167 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "pervouralsk": {
     "name": "Первоуральск",
     "address": "г. Первоуральск, ул. Ватутина, 45",
     "coordinates": { "lat": 56.908333, "lon": 59.943889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "rubtsovsk": {
     "name": "Рубцовск",
     "address": "г. Рубцовск, пр. Ленина, 144",
     "coordinates": { "lat": 51.500000, "lon": 81.200000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "miass": {
     "name": "Миасс",
     "address": "г. Миасс, пр. Автозаводцев, 55",
     "coordinates": { "lat": 55.045000, "lon": 60.108333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "elektrostal": {
     "name": "Электросталь",
     "address": "г. Электросталь, пр. Ленина, 2",
     "coordinates": { "lat": 55.789444, "lon": 38.446389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "kolpino": {
     "name": "Колпино",
     "address": "г. Колпино, бул. Трудящихся, 24",
     "coordinates": { "lat": 59.750000, "lon": 30.590278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "kolomna": {
     "name": "Коломна",
     "address": "г. Коломна, ул. Октябрьской Революции, 354",
     "coordinates": { "lat": 55.078889, "lon": 38.778333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "kovrov": {
     "name": "Ковров",
     "address": "г. Ковров, ул. Абельмана, 86",
     "coordinates": { "lat": 56.358056, "lon": 41.319167 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "murom": {
     "name": "Муром",
     "address": "г. Муром, ул. Ленина, 15",
     "coordinates": { "lat": 55.575000, "lon": 42.043056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "noginsk": {
     "name": "Ногинск",
     "address": "г. Ногинск, ул. Рабочая, 10",
     "coordinates": { "lat": 55.865556, "lon": 38.443889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "serpukhov": {
     "name": "Серпухов",
     "address": "г. Серпухов, ул. Советская, 87",
     "coordinates": { "lat": 54.915833, "lon": 37.411111 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "shchelkovo": {
     "name": "Щёлково",
     "address": "г. Щёлково, ул. Советская, 1",
     "coordinates": { "lat": 55.921111, "lon": 37.998333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "orekhovo-zuevo": {
     "name": "Орехово-Зуево",
     "address": "г. Орехово-Зуево, ул. Ленина, 97",
     "coordinates": { "lat": 55.806944, "lon": 38.961667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "krasnogorsk": {
     "name": "Красногорск",
     "address": "г. Красногорск, ул. Ленина, 1",
     "coordinates": { "lat": 55.820278, "lon": 37.330556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "odintsovo": {
     "name": "Одинцово",
     "address": "г. Одинцово, ул. Маршала Жукова, 29",
     "coordinates": { "lat": 55.679722, "lon": 37.282222 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "ramenskoye": {
     "name": "Раменское",
     "address": "г. Раменское, ул. Советская, 6",
     "coordinates": { "lat": 55.567500, "lon": 38.226944 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "zhukovsky": {
     "name": "Жуковский",
     "address": "г. Жуковский, ул. Гагарина, 1",
     "coordinates": { "lat": 55.595833, "lon": 38.120000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "pushkino": {
     "name": "Пушкино",
     "address": "г. Пушкино, Московский пр., 12",
     "coordinates": { "lat": 56.011944, "lon": 37.854722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "dolgoprudny": {
     "name": "Долгопрудный",
     "address": "г. Долгопрудный, Лихачёвский пр., 70",
     "coordinates": { "lat": 55.939167, "lon": 37.513889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "reutov": {
     "name": "Реутов",
     "address": "г. Реутов, ул. Ленина, 1",
     "coordinates": { "lat": 55.760556, "lon": 37.855833 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4500, "taiga": 4000, "banya": 3500 }
   },
   "dimitrovgrad": {
     "name": "Димитровград",
     "address": "г. Димитровград, пр. Ленина, 2",
     "coordinates": { "lat": 54.214167, "lon": 49.618333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kamensk-shakhtinsky": {
     "name": "Каменск-Шахтинский",
     "address": "г. Каменск-Шахтинский, пр. Карла Маркса, 42",
     "coordinates": { "lat": 48.317778, "lon": 40.263333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "noyabrsk": {
     "name": "Ноябрьск",
     "address": "г. Ноябрьск, ул. Ленина, 37",
     "coordinates": { "lat": 63.198889, "lon": 75.450000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 4000, "taiga": 3500, "banya": 3000 }
   },
   "pyatigorsk": {
     "name": "Пятигорск",
     "address": "г. Пятигорск, пр. Кирова, 61",
     "coordinates": { "lat": 44.048889, "lon": 43.059722 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "ozersk": {
     "name": "Озёрск",
     "address": "г. Озёрск, пр. Ленина, 48",
     "coordinates": { "lat": 55.755556, "lon": 60.703056 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novocheboksarsk": {
     "name": "Новочебоксарск",
     "address": "г. Новочебоксарск, ул. Винокурова, 14",
     "coordinates": { "lat": 56.115000, "lon": 47.478333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "berezniki": {
     "name": "Березники",
     "address": "г. Березники, пр. Ленина, 48",
     "coordinates": { "lat": 59.408889, "lon": 56.820278 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "neftekamsk": {
     "name": "Нефтекамск",
     "address": "г. Нефтекамск, ул. Ленина, 1",
     "coordinates": { "lat": 56.088333, "lon": 54.266667 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "salavat": {
     "name": "Салават",
     "address": "г. Салават, ул. Ленина, 2",
     "coordinates": { "lat": 53.361111, "lon": 55.925000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "oktyabrsky": {
     "name": "Октябрьский",
     "address": "г. Октябрьский, ул. Ленина, 32",
     "coordinates": { "lat": 54.481111, "lon": 53.471389 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "rybinsk": {
     "name": "Рыбинск",
     "address": "г. Рыбинск, ул. Крестовая, 77",
     "coordinates": { "lat": 58.050000, "lon": 38.858333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "severodvinsk": {
     "name": "Северодвинск",
     "address": "г. Северодвинск, ул. Ломоносова, 85",
     "coordinates": { "lat": 64.563333, "lon": 39.830556 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "armavir": {
     "name": "Армавир",
     "address": "г. Армавир, ул. Ленина, 108",
     "coordinates": { "lat": 44.989444, "lon": 41.123889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "petropavlovsk-kamchatsky": {
     "name": "Петропавловск-Камчатский",
     "address": "г. Петропавловск-Камчатский, пр. Рыбаков, 13",
     "coordinates": { "lat": 53.024444, "lon": 158.643333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   },
   "syzran": {
     "name": "Сызрань",
     "address": "г. Сызрань, ул. Советская, 48",
     "coordinates": { "lat": 53.157778, "lon": 48.468889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "novotroitsk": {
     "name": "Новотроицк",
     "address": "г. Новотроицк, ул. Советская, 80",
     "coordinates": { "lat": 51.203889, "lon": 58.332778 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "kyzyl": {
     "name": "Кызыл",
     "address": "г. Кызыл, ул. Ленина, 1",
     "coordinates": { "lat": 51.719444, "lon": 94.443889 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
   "elista": {
     "name": "Элиста",
     "address": "г. Элиста, ул. Ленина, 249",
     "coordinates": { "lat": 46.307778, "lon": 44.270000 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3500, "taiga": 3000, "banya": 2500 }
   },
   "magadan": {
     "name": "Магадан",
     "address": "г. Магадан, пр. Ленина, 16",
     "coordinates": { "lat": 59.563889, "lon": 150.803333 },
-    "telegram": "@sosalhui",
+    "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 5000, "taiga": 4500, "banya": 4000 }
   }
 }
