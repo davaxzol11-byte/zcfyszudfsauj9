@@ -15,6 +15,8 @@ let users = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
 if (!users.workerStats) users.workerStats = {};
 if (!users.bookings) users.bookings = {};
 if (!users.banned) users.banned = [];
+if (!users.cityReservations) users.cityReservations = {};
+if (!users.linkCreators) users.linkCreators = {};
 if (!users.broadcastSettings) users.broadcastSettings = {
     trainingLink: 'https://t.me/your_training_channel',
     rulesLink: 'https://t.me/your_rules_channel',
@@ -50,6 +52,156 @@ function isAdmin(userId) {
     return users.admins.includes(userId);
 }
 
+// Проверка резервации города
+function isCityReserved(cityKey, userId) {
+    if (!users.cityReservations) users.cityReservations = {};
+    const reservation = users.cityReservations[cityKey];
+
+    if (!reservation) return false;
+
+    // Проверяем, не истекла ли резервация (24 часа)
+    const now = Date.now();
+    const expiryTime = 24 * 60 * 60 * 1000; // 24 часа
+
+    if (now - reservation.timestamp > expiryTime) {
+        // Резервация истекла, удаляем её
+        delete users.cityReservations[cityKey];
+        saveUsers();
+        return false;
+    }
+
+    // Город зарезервирован другим пользователем
+    return reservation.userId !== userId;
+}
+
+// Получить количество зарезервированных городов для пользователя
+function getUserReservedCitiesCount(userId) {
+    if (!users.cityReservations) return 0;
+
+    let count = 0;
+    const now = Date.now();
+    const expiryTime = 24 * 60 * 60 * 1000;
+
+    for (const [cityKey, reservation] of Object.entries(users.cityReservations)) {
+        if (reservation.userId === userId) {
+            // Проверяем, не истекла ли резервация
+            if (now - reservation.timestamp <= expiryTime) {
+                count++;
+            } else {
+                // Удаляем истекшую резервацию
+                delete users.cityReservations[cityKey];
+            }
+        }
+    }
+
+    saveUsers();
+    return count;
+}
+
+// Зарезервировать город
+function reserveCity(cityKey, userId, cityName) {
+    if (!users.cityReservations) users.cityReservations = {};
+
+    users.cityReservations[cityKey] = {
+        userId: userId,
+        cityName: cityName,
+        timestamp: Date.now()
+    };
+
+    saveUsers();
+}
+
+// Создать ссылку для пользователя с кастомными или дефолтными данными
+function createLinkForUser(userId, tempData, customPrices, customAddress, chatId, messageId) {
+    const { cityKey, cityName, cityData } = tempData;
+
+    // Используем кастомные цены или дефолтные
+    const finalPrices = customPrices || cityData.prices;
+
+    // Используем кастомный адрес или дефолтный
+    const finalAddress = customAddress || cityData.address;
+
+    // Сохраняем кастомные данные для этого города
+    if (!users.customCityData) users.customCityData = {};
+    users.customCityData[cityKey] = {
+        prices: finalPrices,
+        address: finalAddress
+    };
+
+    const url = `${baseUrl}/${cityKey}`;
+
+    // Сохраняем создателя ссылки для этого города
+    users.linkCreators[cityKey] = userId;
+
+    // Сохраняем оригинальное русское название города
+    if (!users.cityNames) users.cityNames = {};
+    users.cityNames[cityKey] = cityName;
+
+    // Сохраняем информацию о работнике (создателе ссылки)
+    if (!users.workerInfo) users.workerInfo = {};
+    const workerName = users.customTags?.[userId] ? `#${users.customTags[userId]}` : `ID: ${userId}`;
+    users.workerInfo[cityKey] = {
+        userId: userId,
+        name: workerName,
+        timestamp: Date.now()
+    };
+
+    // Очищаем временные данные
+    delete users.tempLinkData[userId];
+    delete users.userStates[userId];
+    saveUsers();
+
+    // Проверяем, является ли URL публичным
+    const isPublicUrl = !baseUrl.includes('localhost') && !baseUrl.includes('127.0.0.1');
+
+    const message = `✅ *ССЫЛКА СОЗДАНА!*\n\n` +
+        `🏙 *Город:* ${cityName}\n` +
+        `📍 *Адрес:* ${finalAddress}\n` +
+        `💬 *Telegram:* ${cityData.telegram}\n\n` +
+        `💰 *Цены:*\n` +
+        `• Байкал: ${finalPrices.baikal}₽/час\n` +
+        `• Тайга: ${finalPrices.taiga}₽/час\n` +
+        `• Русская баня: ${finalPrices.banya}₽/час\n\n` +
+        `🔗 *Ваша персональная ссылка:*\n${url}\n\n` +
+        `⏰ *Город зарезервирован на 24 часа*\n\n` +
+        `📊 Вы будете получать уведомления о всех заявках с этой ссылки.`;
+
+    if (messageId) {
+        // Если есть messageId, редактируем существующее сообщение
+        bot.editMessageText(message, {
+            chat_id: chatId,
+            message_id: messageId,
+            parse_mode: 'Markdown',
+            reply_markup: isPublicUrl ? {
+                inline_keyboard: [[
+                    { text: '🌐 Открыть сайт', url: url }
+                ]]
+            } : undefined
+        }).catch(err => {
+            console.error('Ошибка редактирования сообщения:', err);
+            // Если не удалось отредактировать, отправляем новое
+            bot.sendMessage(chatId, message, {
+                parse_mode: 'Markdown',
+                reply_markup: isPublicUrl ? {
+                    inline_keyboard: [[
+                        { text: '🌐 Открыть сайт', url: url }
+                    ]]
+                } : undefined
+            });
+        });
+    } else {
+        // Отправляем новое сообщение
+        bot.sendMessage(chatId, message, {
+            parse_mode: 'Markdown',
+            reply_markup: isPublicUrl ? {
+                inline_keyboard: [[
+                    { text: '🌐 Открыть сайт', url: url }
+                ]]
+            } : undefined
+        });
+    }
+}
+
 // Команда /start
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
@@ -67,63 +219,52 @@ bot.onText(/\/start/, (msg) => {
         if (users.pending.includes(userId)) {
             bot.sendMessage(chatId, '⏳ Ваша заявка на рассмотрении. Ожидайте одобрения администратора.');
         } else {
-            // Добавляем в список ожидания
-            users.pending.push(userId);
+            // Начинаем процесс подачи заявки
+            if (!users.userStates) users.userStates = {};
+            users.userStates[userId] = 'waiting_for_application_source';
             saveUsers();
 
-            bot.sendMessage(chatId, '📝 Заявка на доступ отправлена администратору. Ожидайте одобрения.');
-
-            // Уведомляем всех админов
-            const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
-            users.admins.forEach(adminId => {
-                bot.sendMessage(
-                    adminId,
-                    `🔔 *Новая заявка на доступ*\n\n` +
-                    `━━━━━━━━━━━━━━━━━━━━\n` +
-                    `👤 *Пользователь:* ${username}\n` +
-                    `🆔 *ID:* \`${userId}\`\n\n` +
-                    `_Используйте команды для управления:_\n` +
-                    `/approve ${userId}\n` +
-                    `/reject ${userId}`,
-                    { parse_mode: 'Markdown' }
-                );
-            });
+            bot.sendMessage(chatId,
+                `📝 *ЗАЯВКА НА ДОСТУП*\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `Для получения доступа ответьте на несколько вопросов:\n\n` +
+                `1️⃣ *Откуда вы узнали о нашей команде?*\n\n` +
+                `_Напишите ваш ответ:_`,
+                { parse_mode: 'Markdown' }
+            );
         }
         return;
     }
 
-    const stats = getWorkerStats(userId);
-    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
-
-    const welcomeMessage = `🏔 *ДУША СИБИРИ*\n\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n` +
-        `👤 ${username}\n` +
-        `📊 Заявок: ${stats.total} | ✅ ${stats.completed} | ❌ ${stats.failed}\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n\n` +
-        `💡 _Напишите название города для получения ссылки_`;
+    const welcomeMessage = `🌿 *BANSHIK TEAM* — Твой новый уровень профитов.\n\n` +
+        `Мы создали идеальную экосистему для комфортной работы. Самые сочные чеки, моментальные выплаты и поддержка, которая не спит.\n\n` +
+        `Твоя ссылка — твое оружие. Пора делать кэш.`;
 
     const keyboard = isAdmin(userId) ? {
         inline_keyboard: [
-            [{ text: '📊 Мой профиль', callback_data: 'show_profile' }],
-            [{ text: '⚙️ Управление', callback_data: 'admin_panel' }],
-            [{ text: '📝 Создать ссылку', callback_data: 'create_link' }],
-            [{ text: 'ℹ️ Информация', callback_data: 'worker_info' }],
-            [{ text: '❓ Помощь', callback_data: 'show_help' }]
+            [{ text: '👤 Личный кабинет', callback_data: 'show_profile' }],
+            [{ text: '⚙️ Настройки бота', callback_data: 'bot_settings' }],
+            [{ text: '🔗 Сгенерировать линк', callback_data: 'create_link' }],
+            [{ text: '📚 Мануалы & Инфо', callback_data: 'worker_info' }],
+            [{ text: '🆘 Саппорт (24/7)', callback_data: 'support' }],
+            [{ text: '⚙️ Админ-панель', callback_data: 'admin_panel' }]
         ]
     } : {
         inline_keyboard: [
-            [{ text: '📊 Мой профиль', callback_data: 'show_profile' }],
-            [{ text: '📝 Создать ссылку', callback_data: 'create_link' }],
-            [{ text: 'ℹ️ Информация', callback_data: 'worker_info' }],
-            [{ text: '❓ Помощь', callback_data: 'show_help' }]
+            [{ text: '👤 Личный кабинет', callback_data: 'show_profile' }],
+            [{ text: '⚙️ Настройки бота', callback_data: 'bot_settings' }],
+            [{ text: '🔗 Сгенерировать линк', callback_data: 'create_link' }],
+            [{ text: '📚 Мануалы & Инфо', callback_data: 'worker_info' }],
+            [{ text: '🆘 Саппорт (24/7)', callback_data: 'support' }]
         ]
     };
 
-    // Отправляем фото с меню без текста
     bot.sendPhoto(chatId, fs.createReadStream('./images/menu-not-found.jpg'), {
+        caption: welcomeMessage,
+        parse_mode: 'Markdown',
         reply_markup: keyboard
     }).catch(err => {
-        console.error('Ошибка отправки фото меню:', err);
+        console.error('Ошибка отправки меню:', err);
     });
 });
 
@@ -522,13 +663,21 @@ bot.onText(/\/profile/, (msg) => {
     const regDate = new Date(users.registrationDates[userId]);
     const formattedDate = `${String(regDate.getHours()).padStart(2, '0')}:${String(regDate.getMinutes()).padStart(2, '0')} ${String(regDate.getDate()).padStart(2, '0')}.${String(regDate.getMonth() + 1).padStart(2, '0')}.${regDate.getFullYear()}`;
 
+    // Получаем баланс
+    if (!users.balances) users.balances = {};
+    if (!users.balances[userId]) {
+        users.balances[userId] = { available: 0, totalEarned: 0 };
+    }
+    const balance = users.balances[userId];
+    const availableBalance = balance.available || 0;
+
     const profileMessage = `🏔 *Главное меню*\n\n` +
-        `📇 *Ваш ID:* ${userId}\n` +
-        `📇 *Ваш тэг:* ${username}\n` +
+        `🆔 *Ваш ID:* ${userId}\n` +
+        `🏷 *Ваш тэг:* ${username}\n` +
         `📅 *Дата регистрации:* ${formattedDate}\n` +
         `━━━━━━━━━━━━━━━━━━━━\n` +
         `💰 *Сумма профитов:* ${stats.completed * 500}₽\n` +
-        `💰 *Кол-во профитов:* ${stats.completed}`;
+        `💳 *К выплате:* ${availableBalance.toLocaleString('ru-RU')} ₽`;
 
     bot.sendMessage(chatId, profileMessage, {
         parse_mode: 'Markdown',
@@ -559,23 +708,36 @@ bot.on('callback_query', (query) => {
             saveUsers();
         }
 
-        const stats = getWorkerStats(userId);
-        const username = query.from.username ? `@${query.from.username}` : query.from.first_name;
+        const welcomeMessage = `🌿 *BANSHIK TEAM* — Твой новый уровень профитов.\n\n` +
+            `Мы создали идеальную экосистему для комфортной работы. Самые сочные чеки, моментальные выплаты и поддержка, которая не спит.\n\n` +
+            `Твоя ссылка — твое оружие. Пора делать кэш.`;
 
-        const keyboard = {
+        const keyboard = isAdmin(userId) ? {
             inline_keyboard: [
-                [{ text: '📊 Мой профиль', callback_data: 'show_profile' }],
-                [{ text: '📝 Создать ссылку', callback_data: 'create_link' }],
-                [{ text: 'ℹ️ Информация', callback_data: 'worker_info' }],
-                [{ text: '❓ Помощь', callback_data: 'show_help' }]
+                [{ text: '👤 Личный кабинет', callback_data: 'show_profile' }],
+                [{ text: '⚙️ Настройки бота', callback_data: 'bot_settings' }],
+                [{ text: '🔗 Сгенерировать линк', callback_data: 'create_link' }],
+                [{ text: '📚 Мануалы & Инфо', callback_data: 'worker_info' }],
+                [{ text: '🆘 Саппорт (24/7)', callback_data: 'support' }],
+                [{ text: '⚙️ Админ-панель', callback_data: 'admin_panel' }]
+            ]
+        } : {
+            inline_keyboard: [
+                [{ text: '👤 Личный кабинет', callback_data: 'show_profile' }],
+                [{ text: '⚙️ Настройки бота', callback_data: 'bot_settings' }],
+                [{ text: '🔗 Сгенерировать линк', callback_data: 'create_link' }],
+                [{ text: '📚 Мануалы & Инфо', callback_data: 'worker_info' }],
+                [{ text: '🆘 Саппорт (24/7)', callback_data: 'support' }]
             ]
         };
 
-        // Удаляем старое сообщение и отправляем новое фото
+        // Удаляем старое сообщение и отправляем новое
         bot.deleteMessage(chatId, messageId).catch(() => {});
         bot.sendPhoto(chatId, fs.createReadStream('./images/menu-not-found.jpg'), {
+            caption: welcomeMessage,
+            parse_mode: 'Markdown',
             reply_markup: keyboard
-        }).catch(err => console.error('Ошибка отправки фото:', err));
+        }).catch(err => console.error('Ошибка отправки меню:', err));
 
         bot.answerCallbackQuery(query.id);
         return;
@@ -598,6 +760,8 @@ bot.on('callback_query', (query) => {
             parse_mode: 'Markdown',
             reply_markup: {
                 inline_keyboard: [
+                    [{ text: '🔍 Найти воркера', callback_data: 'search_worker' }],
+                    [{ text: '🗺 Резервации городов', callback_data: 'show_reservations' }],
                     [{ text: '💸 Заявки на вывод', callback_data: 'show_withdrawals' }],
                     [{ text: '📋 Заявки на доступ', callback_data: 'show_pending' }],
                     [{ text: '👥 Пользователи', callback_data: 'manage_users' }],
@@ -623,14 +787,11 @@ bot.on('callback_query', (query) => {
         users.userStates[userId] = 'waiting_for_city';
         saveUsers();
 
-        const linkMessage = `📝 *СОЗДАТЬ ССЫЛКУ*\n\n` +
-            `━━━━━━━━━━━━━━━━━━━━\n` +
-            `Для создания персональной ссылки:\n\n` +
-            `1️⃣ Напишите название города\n` +
-            `2️⃣ Получите уникальную ссылку\n` +
-            `3️⃣ Делитесь ей с клиентами\n\n` +
-            `💡 _Примеры: Москва, Тюмень, Сургут_\n\n` +
-            `📊 Все заявки с вашей ссылки будут приходить вам с уведомлениями`;
+        const linkMessage = `🔗 *ГЕНЕРАЦИЯ ССЫЛКИ*\n\n` +
+            `Чтобы создать персональный домен под сауну, просто отправь название города ответным сообщением.\n\n` +
+            `📍 *Популярные сейчас:* Москва, Питер, Казань\n` +
+            `⚡️ *Статус системы:* Домены активны, прокси настроены.\n\n` +
+            `🔔 Все переходы и заявки будут моментально приходить тебе в личку.`;
 
         // Удаляем фото и отправляем текст
         bot.deleteMessage(chatId, messageId).catch(() => {});
@@ -638,6 +799,90 @@ bot.on('callback_query', (query) => {
             parse_mode: 'Markdown',
             reply_markup: {
                 inline_keyboard: [
+                    [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
+                ]
+            }
+        });
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Настройки бота
+    if (data === 'bot_settings') {
+        // Сбрасываем состояние
+        if (users.userStates && users.userStates[userId]) {
+            delete users.userStates[userId];
+            saveUsers();
+        }
+
+        const settingsMessage = `⚙️ *НАСТРОЙКИ БОТА*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `Управление вашими настройками:`;
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId, settingsMessage, {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: '🏙 Мои города', callback_data: 'my_cities' }],
+                    [{ text: '✏️ Изменить тэг', callback_data: 'change_tag' }],
+                    [{ text: '🔔 Уведомления', callback_data: 'notification_settings' }],
+                    [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
+                ]
+            }
+        });
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Саппорт
+    if (data === 'support') {
+        // Сбрасываем состояние
+        if (users.userStates && users.userStates[userId]) {
+            delete users.userStates[userId];
+            saveUsers();
+        }
+
+        const supportMessage = `🆘 *САППОРТ (24/7)*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `Нужна помощь? Мы всегда на связи!\n\n` +
+            `💬 Напишите администратору:\n` +
+            `@SibirbanyaVitya\n\n` +
+            `⏰ Среднее время ответа: 5-15 минут`;
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId, supportMessage, {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: '💬 Написать в Telegram', url: 'https://t.me/SibirbanyaVitya' }],
+                    [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
+                ]
+            }
+        });
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Настройки уведомлений
+    if (data === 'notification_settings') {
+        const notifMessage = `🔔 *НАСТРОЙКИ УВЕДОМЛЕНИЙ*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `Управление уведомлениями:\n\n` +
+            `✅ Уведомления о посещениях\n` +
+            `✅ Уведомления о заявках\n` +
+            `✅ Уведомления о профитах\n\n` +
+            `💡 _Скоро появится возможность настройки_`;
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId, notifMessage, {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: '⚙️ Настройки бота', callback_data: 'bot_settings' }],
                     [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
                 ]
             }
@@ -755,9 +1000,17 @@ bot.on('callback_query', (query) => {
         const completed = stats.completed || 0;
         const avgCheck = completed > 0 ? Math.round(totalEarned / completed) : 0;
 
+        // Получаем баланс
+        if (!users.balances) users.balances = {};
+        if (!users.balances[userId]) {
+            users.balances[userId] = { available: 0, totalEarned: 0 };
+        }
+        const balance = users.balances[userId];
+        const availableBalance = balance.available || 0;
+
         const statsMessage = `📊 *Статистика за всё время:*\n\n` +
             `💰 *Сумма профитов:* ${totalEarned.toLocaleString('ru-RU')}₽\n` +
-            `💰 *Кол-во профитов:* ${completed}\n` +
+            `💳 *К выплате:* ${availableBalance.toLocaleString('ru-RU')} ₽\n` +
             `📈 *Средний чек:* ${avgCheck.toLocaleString('ru-RU')}₽\n\n` +
             `🕒 *Последняя активность:* ${lastActivity}`;
 
@@ -907,6 +1160,258 @@ bot.on('callback_query', (query) => {
         return;
     }
 
+    // Мои города
+    if (data === 'my_cities') {
+        // Сбрасываем состояние
+        if (users.userStates && users.userStates[userId]) {
+            delete users.userStates[userId];
+            saveUsers();
+        }
+
+        // Получаем зарезервированные города пользователя
+        const userCities = [];
+        const now = Date.now();
+        const expiryTime = 24 * 60 * 60 * 1000;
+
+        if (users.cityReservations) {
+            for (const [cityKey, reservation] of Object.entries(users.cityReservations)) {
+                if (reservation.userId === userId) {
+                    const timeLeft = expiryTime - (now - reservation.timestamp);
+                    if (timeLeft > 0) {
+                        const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                        const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+
+                        // Получаем статистику по городу
+                        const cityVisits = users.cityVisits?.[cityKey] || 0;
+                        const cityBookings = Object.values(users.bookings || {}).filter(b => b.cityKey === cityKey).length;
+
+                        userCities.push({
+                            cityKey,
+                            cityName: reservation.cityName,
+                            hoursLeft,
+                            minutesLeft,
+                            visits: cityVisits,
+                            bookings: cityBookings
+                        });
+                    }
+                }
+            }
+        }
+
+        if (userCities.length === 0) {
+            bot.deleteMessage(chatId, messageId).catch(() => {});
+            bot.sendMessage(chatId,
+                `🏙 *МОИ ГОРОДА*\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `У вас нет зарезервированных городов.\n\n` +
+                `Нажмите "📝 Создать ссылку" для резервации города.`,
+                {
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: '📝 Создать ссылку', callback_data: 'create_link' }],
+                            [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
+                        ]
+                    }
+                }
+            );
+        } else {
+            let message = `🏙 *МОИ ГОРОДА*\n\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+            const buttons = [];
+
+            userCities.forEach((city, index) => {
+                message += `${index + 1}. *${city.cityName}*\n`;
+                message += `⏰ Осталось: ${city.hoursLeft}ч ${city.minutesLeft}м\n`;
+                message += `👁 Посещений: ${city.visits} | 📋 Заявок: ${city.bookings}\n`;
+                message += `🔗 ${baseUrl}/${city.cityKey}\n\n`;
+
+                buttons.push([{ text: `🗑 Освободить ${city.cityName}`, callback_data: `release_city_${city.cityKey}` }]);
+            });
+
+            message += `\n💡 _Максимум городов: ${userCities.length}/3_`;
+
+            buttons.push([{ text: '🔄 Обновить', callback_data: 'my_cities' }]);
+            buttons.push([{ text: '🏠 Главное меню', callback_data: 'main_menu' }]);
+
+            bot.deleteMessage(chatId, messageId).catch(() => {});
+            bot.sendMessage(chatId, message, {
+                parse_mode: 'Markdown',
+                reply_markup: { inline_keyboard: buttons }
+            });
+        }
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Освободить город
+    if (data.startsWith('release_city_')) {
+        const cityKey = data.replace('release_city_', '');
+        const reservation = users.cityReservations?.[cityKey];
+
+        if (!reservation || reservation.userId !== userId) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Город не найден' });
+            return;
+        }
+
+        // Удаляем резервацию
+        delete users.cityReservations[cityKey];
+        delete users.linkCreators[cityKey];
+        delete users.customCityData?.[cityKey];
+        saveUsers();
+
+        bot.answerCallbackQuery(query.id, { text: '✅ Город освобожден' });
+
+        // Обновляем список городов
+        bot.emit('callback_query', { ...query, data: 'my_cities' });
+        return;
+    }
+
+    // Поиск воркера (админ)
+    if (data === 'search_worker') {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        users.userStates[userId] = 'waiting_for_worker_search';
+        saveUsers();
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId,
+            `🔍 *ПОИСК ВОРКЕРА*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `Введите ID или тэг воркера:\n\n` +
+            `💡 _Примеры: 123456789, banshik-123_`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '❌ Отмена', callback_data: 'admin_panel' }]
+                    ]
+                }
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Показать резервации (админ)
+    if (data === 'show_reservations') {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const now = Date.now();
+        const expiryTime = 24 * 60 * 60 * 1000;
+        const activeReservations = [];
+
+        if (users.cityReservations) {
+            for (const [cityKey, reservation] of Object.entries(users.cityReservations)) {
+                const timeLeft = expiryTime - (now - reservation.timestamp);
+                if (timeLeft > 0) {
+                    const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                    const workerInfo = users.workerInfo?.[cityKey];
+                    const workerTag = users.customTags?.[reservation.userId] || reservation.userId;
+
+                    activeReservations.push({
+                        cityName: reservation.cityName,
+                        cityKey,
+                        workerTag,
+                        workerName: workerInfo?.name || 'Неизвестен',
+                        hoursLeft
+                    });
+                }
+            }
+        }
+
+        if (activeReservations.length === 0) {
+            bot.editMessageText(
+                `🗺 *РЕЗЕРВАЦИИ ГОРОДОВ*\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `Нет активных резерваций.`,
+                {
+                    chat_id: chatId,
+                    message_id: messageId,
+                    parse_mode: 'Markdown',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: '⚙️ Управление', callback_data: 'admin_panel' }],
+                            [{ text: '🏠 Главное меню', callback_data: 'main_menu' }]
+                        ]
+                    }
+                }
+            );
+        } else {
+            let message = `🗺 *РЕЗЕРВАЦИИ ГОРОДОВ*\n\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+            const buttons = [];
+
+            activeReservations.forEach((res, index) => {
+                message += `${index + 1}. *${res.cityName}*\n`;
+                message += `👤 Воркер: #${res.workerTag}\n`;
+                message += `⏰ Осталось: ~${res.hoursLeft}ч\n`;
+                message += `🔗 ${baseUrl}/${res.cityKey}\n\n`;
+
+                buttons.push([{ text: `🗑 Освободить ${res.cityName}`, callback_data: `admin_release_${res.cityKey}` }]);
+            });
+
+            message += `\n📊 Всего резерваций: ${activeReservations.length}`;
+
+            buttons.push([{ text: '🔄 Обновить', callback_data: 'show_reservations' }]);
+            buttons.push([{ text: '⚙️ Управление', callback_data: 'admin_panel' }]);
+
+            bot.editMessageText(message, {
+                chat_id: chatId,
+                message_id: messageId,
+                parse_mode: 'Markdown',
+                reply_markup: { inline_keyboard: buttons }
+            });
+        }
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Админ освобождает город
+    if (data.startsWith('admin_release_')) {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const cityKey = data.replace('admin_release_', '');
+        const reservation = users.cityReservations?.[cityKey];
+
+        if (!reservation) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Резервация не найдена' });
+            return;
+        }
+
+        const workerUserId = reservation.userId;
+
+        // Удаляем резервацию
+        delete users.cityReservations[cityKey];
+        delete users.linkCreators[cityKey];
+        delete users.customCityData?.[cityKey];
+        saveUsers();
+
+        // Уведомляем воркера
+        bot.sendMessage(workerUserId,
+            `⚠️ *Резервация города освобождена*\n\n` +
+            `🏙 Город: ${reservation.cityName}\n` +
+            `👤 Освободил: Администратор`,
+            { parse_mode: 'Markdown' }
+        ).catch(err => console.error('Ошибка уведомления воркера:', err));
+
+        bot.answerCallbackQuery(query.id, { text: '✅ Город освобожден' });
+
+        // Обновляем список резерваций
+        bot.emit('callback_query', { ...query, data: 'show_reservations' });
+        return;
+    }
+
     // Показать помощь
     if (data === 'show_help') {
         // Сбрасываем состояние ожидания города
@@ -919,20 +1424,25 @@ bot.on('callback_query', (query) => {
             ? `❓ *СПРАВКА*\n\n` +
               `━━━━━━━━━━━━━━━━━━━━\n` +
               `📝 *Как работать:*\n\n` +
-              `• Напишите название города → получите ссылку\n` +
-              `• Новые заявки приходят автоматически\n` +
-              `• Нажмите "Взял на отработку"\n` +
-              `• Отметьте "Оплатил" или "Не оплатил"\n\n` +
-              `⚙️ *Команды админа:*\n` +
-              `• \`/pending\` - заявки на доступ\n` +
-              `• \`/approve [ID]\` - одобрить\n` +
-              `• \`/reject [ID]\` - отклонить\n` +
-              `• \`/ban [ID]\` - забанить\n` +
-              `• \`/unban [ID]\` - разбанить\n` +
-              `• \`/stats\` - общая статистика\n` +
-              `• \`/setprice [город] [сауна] [цена]\`\n` +
-              `• \`/prices [город]\` - цены города`
+              `• Создайте ссылку для города\n` +
+              `• Делитесь ссылкой с клиентами\n` +
+              `• Получайте уведомления о заявках\n` +
+              `• Админы обрабатывают заявки\n\n` +
+              `⚙️ *Админ-панель:*\n` +
+              `Все функции доступны через кнопки в меню "⚙️ Управление"`
             : `❓ *СПРАВКА*\n\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `📝 *Как работать:*\n\n` +
+              `• Создайте ссылку для города\n` +
+              `• Делитесь ссылкой с клиентами\n` +
+              `• Получайте уведомления о заявках\n` +
+              `• Админы обрабатывают заявки\n\n` +
+              `🏙 *Мои города:*\n` +
+              `Просматривайте свои зарезервированные города, статистику посещений и заявок.\n\n` +
+              `💡 *Резервация:*\n` +
+              `• Город резервируется на 24 часа\n` +
+              `• Максимум 3 города одновременно\n` +
+              `• Можно освободить досрочно`;
               `━━━━━━━━━━━━━━━━━━━━\n` +
               `📝 *Как работать:*\n\n` +
               `1️⃣ Напишите название города\n` +
@@ -1770,6 +2280,109 @@ bot.on('callback_query', (query) => {
         return;
     }
 
+    // Использовать стандартные цены
+    if (data === 'use_default_prices') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Данные не найдены' });
+            return;
+        }
+
+        // Переходим к выбору адреса
+        users.userStates[userId] = 'waiting_for_address_choice';
+        saveUsers();
+
+        const cityData = tempData.cityData;
+        bot.editMessageText(
+            `✅ *Цены установлены (стандартные)*\n\n` +
+            `📍 *Адрес по умолчанию:*\n${cityData.address}\n\n` +
+            `Хотите использовать этот адрес или указать свой?`,
+            {
+                chat_id: chatId,
+                message_id: messageId,
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '✅ Использовать стандартный', callback_data: 'use_default_address' }],
+                        [{ text: '✏️ Указать свой адрес', callback_data: 'use_custom_address' }]
+                    ]
+                }
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Указать свои цены
+    if (data === 'use_custom_prices') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Данные не найдены' });
+            return;
+        }
+
+        users.userStates[userId] = 'waiting_for_custom_prices';
+        saveUsers();
+
+        bot.editMessageText(
+            `✏️ *Укажите свои цены*\n\n` +
+            `Введите цены через запятую в формате:\n` +
+            `\`Байкал, Тайга, Баня\`\n\n` +
+            `*Пример:* 5000, 4500, 4000`,
+            {
+                chat_id: chatId,
+                message_id: messageId,
+                parse_mode: 'Markdown'
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Использовать стандартный адрес
+    if (data === 'use_default_address') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Данные не найдены' });
+            return;
+        }
+
+        // Создаем ссылку (используем кастомные цены если были указаны)
+        const customPrices = tempData.customPrices || null;
+        createLinkForUser(userId, tempData, customPrices, null, chatId, messageId);
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Указать свой адрес
+    if (data === 'use_custom_address') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Данные не найдены' });
+            return;
+        }
+
+        users.userStates[userId] = 'waiting_for_custom_address';
+        saveUsers();
+
+        bot.editMessageText(
+            `✏️ *Укажите свой адрес*\n\n` +
+            `Введите адрес в формате:\n` +
+            `\`г. Город, ул. Улица, дом\`\n\n` +
+            `*Пример:* г. Москва, ул. Ленина, 10`,
+            {
+                chat_id: chatId,
+                message_id: messageId,
+                parse_mode: 'Markdown'
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
     // Кнопка "Взял на отработку"
     if (data.startsWith('take_')) {
         const bookingId = data.replace('take_', '');
@@ -2078,14 +2691,78 @@ bot.on('message', (msg) => {
     // Пропускаем команды
     if (text.startsWith('/')) return;
 
-    // Проверка доступа
+    // Проверяем состояние пользователя
+    if (!users.userStates) users.userStates = {};
+
+    // Обработка заявки на доступ - ПЕРЕД проверкой доступа
+    if (users.userStates[userId] === 'waiting_for_application_source') {
+        if (!users.applications) users.applications = {};
+        users.applications[userId] = { source: text.trim() };
+        users.userStates[userId] = 'waiting_for_application_experience';
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `2️⃣ *Расскажите о вашем опыте работы*\n\n` +
+            `_Опишите ваш опыт (можно кратко):_`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
+
+    if (users.userStates[userId] === 'waiting_for_application_experience') {
+        users.applications[userId].experience = text.trim();
+        users.userStates[userId] = 'waiting_for_application_about';
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `3️⃣ *Расскажите о себе*\n\n` +
+            `_Немного информации о вас:_`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
+
+    if (users.userStates[userId] === 'waiting_for_application_about') {
+        users.applications[userId].about = text.trim();
+        users.applications[userId].timestamp = Date.now();
+
+        // Добавляем в список ожидания
+        users.pending.push(userId);
+        delete users.userStates[userId];
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `✅ *Заявка отправлена!*\n\n` +
+            `Спасибо за заполнение анкеты.\n` +
+            `Администратор рассмотрит вашу заявку в ближайшее время.`,
+            { parse_mode: 'Markdown' }
+        );
+
+        // Уведомляем всех админов
+        const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
+        const app = users.applications[userId];
+        users.admins.forEach(adminId => {
+            bot.sendMessage(
+                adminId,
+                `🔔 *Новая заявка на доступ*\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `👤 *Пользователь:* ${username}\n` +
+                `🆔 *ID:* \`${userId}\`\n\n` +
+                `📍 *Откуда узнал:* ${app.source}\n` +
+                `💼 *Опыт:* ${app.experience}\n` +
+                `👨‍💼 *О себе:* ${app.about}\n\n` +
+                `_Используйте кнопки в разделе "📋 Заявки на доступ"_`,
+                { parse_mode: 'Markdown' }
+            );
+        });
+        return;
+    }
+
+    // Проверка доступа - ПОСЛЕ обработки заявки
     if (!hasAccess(userId)) {
         bot.sendMessage(chatId, '❌ У вас нет доступа к боту. Используйте /start для подачи заявки.');
         return;
     }
-
-    // Проверяем состояние пользователя
-    if (!users.userStates) users.userStates = {};
 
     // Обработка ввода суммы оплаты
     if (users.userStates[userId] && typeof users.userStates[userId] === 'object' && users.userStates[userId].state === 'waiting_for_amount') {
@@ -2157,6 +2834,115 @@ bot.on('message', (msg) => {
                 console.error('Ошибка отправки фото профита:', err);
             });
         }
+
+        return;
+    }
+
+    // Обработка поиска воркера
+    if (users.userStates[userId] === 'waiting_for_worker_search') {
+        const searchQuery = text.trim();
+        let targetUserId = null;
+
+        // Проверяем, это ID или тег
+        if (/^\d+$/.test(searchQuery)) {
+            // Это ID
+            targetUserId = parseInt(searchQuery);
+        } else {
+            // Это тег, ищем по customTags
+            for (const [uid, tag] of Object.entries(users.customTags || {})) {
+                if (tag.toLowerCase() === searchQuery.toLowerCase() || `#${tag}`.toLowerCase() === searchQuery.toLowerCase()) {
+                    targetUserId = parseInt(uid);
+                    break;
+                }
+            }
+        }
+
+        if (!targetUserId || !hasAccess(targetUserId)) {
+            bot.sendMessage(chatId, '❌ Воркер не найден в базе.');
+            return;
+        }
+
+        // Получаем данные воркера
+        const stats = getWorkerStats(targetUserId);
+        const workerTag = users.customTags?.[targetUserId] || targetUserId;
+        const balance = users.balances?.[targetUserId] || { available: 0, totalEarned: 0 };
+        const regDate = users.registrationDates?.[targetUserId] ? new Date(users.registrationDates[targetUserId]) : null;
+
+        // Получаем зарезервированные города
+        const workerCities = [];
+        const now = Date.now();
+        const expiryTime = 24 * 60 * 60 * 1000;
+
+        if (users.cityReservations) {
+            for (const [cityKey, reservation] of Object.entries(users.cityReservations)) {
+                if (reservation.userId === targetUserId) {
+                    const timeLeft = expiryTime - (now - reservation.timestamp);
+                    if (timeLeft > 0) {
+                        const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                        const cityVisits = users.cityVisits?.[cityKey] || 0;
+                        const cityBookings = Object.values(users.bookings || {}).filter(b => b.cityKey === cityKey).length;
+
+                        workerCities.push({
+                            cityName: reservation.cityName,
+                            cityKey,
+                            hoursLeft,
+                            visits: cityVisits,
+                            bookings: cityBookings
+                        });
+                    }
+                }
+            }
+        }
+
+        // Получаем последнюю активность
+        let lastActivity = 'Нет данных';
+        const userBookings = Object.values(users.bookings || {}).filter(b => {
+            const creatorId = users.linkCreators?.[b.cityKey];
+            return creatorId === targetUserId;
+        });
+
+        if (userBookings.length > 0) {
+            const lastBooking = userBookings[userBookings.length - 1];
+            const lastDate = new Date(lastBooking.timestamp);
+            lastActivity = `${String(lastDate.getDate()).padStart(2, '0')}.${String(lastDate.getMonth() + 1).padStart(2, '0')}.${lastDate.getFullYear()} ${String(lastDate.getHours()).padStart(2, '0')}:${String(lastDate.getMinutes()).padStart(2, '0')}`;
+        }
+
+        let message = `👤 *ПРОФИЛЬ ВОРКЕРА*\n\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+        message += `📇 *ID:* \`${targetUserId}\`\n`;
+        message += `📇 *Тэг:* #${workerTag}\n`;
+        if (regDate) {
+            message += `📅 *Регистрация:* ${String(regDate.getDate()).padStart(2, '0')}.${String(regDate.getMonth() + 1).padStart(2, '0')}.${regDate.getFullYear()}\n`;
+        }
+        message += `\n💰 *ФИНАНСЫ:*\n`;
+        message += `• Доступно: ${balance.available.toLocaleString('ru-RU')}₽\n`;
+        message += `• Всего заработано: ${balance.totalEarned.toLocaleString('ru-RU')}₽\n`;
+        message += `\n📊 *СТАТИСТИКА:*\n`;
+        message += `• Профитов: ${stats.completed || 0}\n`;
+        message += `• Средний чек: ${stats.completed > 0 ? Math.round(stats.totalEarned / stats.completed) : 0}₽\n`;
+        message += `• Последняя активность: ${lastActivity}\n`;
+
+        if (workerCities.length > 0) {
+            message += `\n🏙 *ГОРОДА (${workerCities.length}/3):*\n`;
+            workerCities.forEach(city => {
+                message += `• ${city.cityName} (~${city.hoursLeft}ч)\n`;
+                message += `  👁 ${city.visits} | 📋 ${city.bookings}\n`;
+            });
+        } else {
+            message += `\n🏙 *ГОРОДА:* Нет резерваций\n`;
+        }
+
+        const buttons = [
+            [{ text: '🔍 Новый поиск', callback_data: 'search_worker' }],
+            [{ text: '⚙️ Управление', callback_data: 'admin_panel' }]
+        ];
+
+        delete users.userStates[userId];
+        saveUsers();
+
+        bot.sendMessage(chatId, message, {
+            parse_mode: 'Markdown',
+            reply_markup: { inline_keyboard: buttons }
+        });
 
         return;
     }
@@ -2337,6 +3123,244 @@ bot.on('message', (msg) => {
         return;
     }
 
+    // Обработка кастомных цен
+    if (users.userStates[userId] === 'waiting_for_custom_prices') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.sendMessage(chatId, '❌ Данные не найдены. Начните создание ссылки заново.');
+            delete users.userStates[userId];
+            saveUsers();
+            return;
+        }
+
+        // Парсим цены
+        const pricesArray = text.trim().split(',').map(p => parseInt(p.trim()));
+
+        if (pricesArray.length !== 3 || pricesArray.some(p => isNaN(p) || p <= 0)) {
+            bot.sendMessage(chatId,
+                `❌ *Неверный формат!*\n\n` +
+                `Введите три числа через запятую.\n` +
+                `*Пример:* 5000, 4500, 4000`,
+                { parse_mode: 'Markdown' }
+            );
+            return;
+        }
+
+        const customPrices = {
+            baikal: pricesArray[0],
+            taiga: pricesArray[1],
+            banya: pricesArray[2]
+        };
+
+        // Сохраняем кастомные цены во временные данные
+        tempData.customPrices = customPrices;
+
+        // Переходим к выбору адреса
+        users.userStates[userId] = 'waiting_for_address_choice';
+        saveUsers();
+
+        const cityData = tempData.cityData;
+        bot.sendMessage(chatId,
+            `✅ *Цены установлены*\n\n` +
+            `• Байкал: ${customPrices.baikal}₽/час\n` +
+            `• Тайга: ${customPrices.taiga}₽/час\n` +
+            `• Русская баня: ${customPrices.banya}₽/час\n\n` +
+            `📍 *Адрес по умолчанию:*\n${cityData.address}\n\n` +
+            `Хотите использовать этот адрес или указать свой?`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '✅ Использовать стандартный', callback_data: 'use_default_address' }],
+                        [{ text: '✏️ Указать свой адрес', callback_data: 'use_custom_address' }]
+                    ]
+                }
+            }
+        );
+        return;
+    }
+
+    // Обработка кастомного адреса
+    if (users.userStates[userId] === 'waiting_for_custom_address') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.sendMessage(chatId, '❌ Данные не найдены. Начните создание ссылки заново.');
+            delete users.userStates[userId];
+            saveUsers();
+            return;
+        }
+
+        const customAddress = text.trim();
+
+        if (customAddress.length < 10) {
+            bot.sendMessage(chatId,
+                `❌ *Адрес слишком короткий!*\n\n` +
+                `Введите полный адрес.\n` +
+                `*Пример:* г. Москва, ул. Ленина, 10`,
+                { parse_mode: 'Markdown' }
+            );
+            return;
+        }
+
+        // Создаем ссылку с кастомными данными
+        const customPrices = tempData.customPrices || null;
+        createLinkForUser(userId, tempData, customPrices, customAddress, chatId, null);
+        return;
+    }
+
+    // Обработка заявки на доступ - шаг 1: откуда узнали
+    if (users.userStates[userId] === 'waiting_for_application_source') {
+        if (!users.applications) users.applications = {};
+        users.applications[userId] = { source: text.trim() };
+        users.userStates[userId] = 'waiting_for_application_experience';
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `2️⃣ *Расскажите о вашем опыте работы*\n\n` +
+            `_Опишите ваш опыт (можно кратко):_`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
+
+    // Обработка заявки на доступ - шаг 2: опыт
+    if (users.userStates[userId] === 'waiting_for_application_experience') {
+        users.applications[userId].experience = text.trim();
+        users.userStates[userId] = 'waiting_for_application_about';
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `3️⃣ *Расскажите о себе*\n\n` +
+            `_Немного информации о вас:_`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
+
+    // Обработка заявки на доступ - шаг 3: о себе
+    if (users.userStates[userId] === 'waiting_for_application_about') {
+        users.applications[userId].about = text.trim();
+        users.applications[userId].timestamp = Date.now();
+
+        // Добавляем в список ожидания
+        users.pending.push(userId);
+        delete users.userStates[userId];
+        saveUsers();
+
+        bot.sendMessage(chatId,
+            `✅ *Заявка отправлена!*\n\n` +
+            `Спасибо за заполнение анкеты.\n` +
+            `Администратор рассмотрит вашу заявку в ближайшее время.`,
+            { parse_mode: 'Markdown' }
+        );
+
+        // Уведомляем всех админов
+        const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
+        const app = users.applications[userId];
+        users.admins.forEach(adminId => {
+            bot.sendMessage(
+                adminId,
+                `🔔 *Новая заявка на доступ*\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `👤 *Пользователь:* ${username}\n` +
+                `🆔 *ID:* \`${userId}\`\n\n` +
+                `📍 *Откуда узнал:* ${app.source}\n` +
+                `💼 *Опыт:* ${app.experience}\n` +
+                `👨‍💼 *О себе:* ${app.about}\n\n` +
+                `_Используйте команды для управления:_\n` +
+                `/approve ${userId}\n` +
+                `/reject ${userId}`,
+                { parse_mode: 'Markdown' }
+            );
+        });
+        return;
+    }
+
+    // Обработка кастомных цен
+    if (users.userStates[userId] === 'waiting_for_custom_prices') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.sendMessage(chatId, '❌ Данные не найдены. Начните создание ссылки заново.');
+            delete users.userStates[userId];
+            saveUsers();
+            return;
+        }
+
+        // Парсим цены
+        const pricesArray = text.trim().split(',').map(p => parseInt(p.trim()));
+
+        if (pricesArray.length !== 3 || pricesArray.some(p => isNaN(p) || p <= 0)) {
+            bot.sendMessage(chatId,
+                `❌ *Неверный формат!*\n\n` +
+                `Введите три числа через запятую.\n` +
+                `*Пример:* 5000, 4500, 4000`,
+                { parse_mode: 'Markdown' }
+            );
+            return;
+        }
+
+        const customPrices = {
+            baikal: pricesArray[0],
+            taiga: pricesArray[1],
+            banya: pricesArray[2]
+        };
+
+        // Сохраняем кастомные цены во временные данные
+        tempData.customPrices = customPrices;
+
+        // Переходим к выбору адреса
+        users.userStates[userId] = 'waiting_for_address_choice';
+        saveUsers();
+
+        const cityData = tempData.cityData;
+        bot.sendMessage(chatId,
+            `✅ *Цены установлены*\n\n` +
+            `• Байкал: ${customPrices.baikal}₽/час\n` +
+            `• Тайга: ${customPrices.taiga}₽/час\n` +
+            `• Русская баня: ${customPrices.banya}₽/час\n\n` +
+            `📍 *Адрес по умолчанию:*\n${cityData.address}\n\n` +
+            `Хотите использовать этот адрес или указать свой?`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '✅ Использовать стандартный', callback_data: 'use_default_address' }],
+                        [{ text: '✏️ Указать свой адрес', callback_data: 'use_custom_address' }]
+                    ]
+                }
+            }
+        );
+        return;
+    }
+
+    // Обработка кастомного адреса
+    if (users.userStates[userId] === 'waiting_for_custom_address') {
+        const tempData = users.tempLinkData?.[userId];
+        if (!tempData) {
+            bot.sendMessage(chatId, '❌ Данные не найдены. Начните создание ссылки заново.');
+            delete users.userStates[userId];
+            saveUsers();
+            return;
+        }
+
+        const customAddress = text.trim();
+
+        if (customAddress.length < 10) {
+            bot.sendMessage(chatId,
+                `❌ *Адрес слишком короткий!*\n\n` +
+                `Введите полный адрес.\n` +
+                `*Пример:* г. Москва, ул. Ленина, 10`,
+                { parse_mode: 'Markdown' }
+            );
+            return;
+        }
+
+        // Создаем ссылку с кастомными данными
+        const customPrices = tempData.customPrices || null;
+        createLinkForUser(userId, tempData, customPrices, customAddress, chatId, null);
+        return;
+    }
+
     if (users.userStates[userId] !== 'waiting_for_city') {
         // Пользователь не в режиме создания ссылки
         bot.sendMessage(chatId, '💡 Для создания ссылки нажмите кнопку "📝 Создать ссылку"');
@@ -2352,58 +3376,88 @@ bot.on('message', (msg) => {
     // Проверяем, есть ли город в базе
     let city = cities[cityKey];
 
+    // Если не найден по ключу, ищем по русскому названию
+    if (!city) {
+        const normalizedInput = cityName.toLowerCase().trim();
+
+        // Ищем город по русскому названию
+        for (const [key, cityData] of Object.entries(cities)) {
+            if (cityData.name.toLowerCase() === normalizedInput) {
+                cityKey = key;
+                city = cityData;
+                break;
+            }
+        }
+    }
+
     if (!city) {
         // Город не найден - отправляем текстовое сообщение
         bot.sendMessage(chatId, '❌ Город не найден в базе данных.');
         return;
     }
 
-    // Сбрасываем состояние
-    delete users.userStates[userId];
-    saveUsers();
+    // Проверяем, не зарезервирован ли город другим воркером
+    if (isCityReserved(cityKey, userId)) {
+        const reservation = users.cityReservations[cityKey];
+        const reservedBy = reservation.userId;
+        const reservedByName = users.workerInfo?.[cityKey]?.name || `ID: ${reservedBy}`;
+        const timeLeft = Math.ceil((24 * 60 * 60 * 1000 - (Date.now() - reservation.timestamp)) / (60 * 60 * 1000));
 
-    const url = `${baseUrl}/${cityKey}`;
+        bot.sendMessage(chatId,
+            `⛔️ *Город уже зарезервирован!*\n\n` +
+            `🏙 *Город:* ${cityName}\n` +
+            `👤 *Зарезервирован:* ${reservedByName}\n` +
+            `⏰ *Осталось времени:* ~${timeLeft} ч\n\n` +
+            `Выберите другой город или дождитесь окончания резервации.`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
 
-    // Сохраняем создателя ссылки для этого города
-    users.linkCreators[cityKey] = userId;
+    // Проверяем лимит городов для воркера
+    const reservedCount = getUserReservedCitiesCount(userId);
+    if (reservedCount >= 3) {
+        bot.sendMessage(chatId,
+            `⛔️ *Достигнут лимит городов!*\n\n` +
+            `У вас уже зарезервировано максимальное количество городов (3).\n\n` +
+            `Дождитесь окончания резервации одного из городов или свяжитесь с администратором.`,
+            { parse_mode: 'Markdown' }
+        );
+        return;
+    }
 
-    // Сохраняем оригинальное русское название города
-    if (!users.cityNames) users.cityNames = {};
-    users.cityNames[cityKey] = cityName;
+    // Резервируем город
+    reserveCity(cityKey, userId, cityName);
 
-    // Сохраняем информацию о работнике (создателе ссылки)
-    if (!users.workerInfo) users.workerInfo = {};
-    const workerName = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
-    users.workerInfo[cityKey] = {
-        userId: userId,
-        name: workerName,
-        firstName: msg.from.first_name,
-        username: msg.from.username
+    // Сохраняем временные данные для создания ссылки
+    if (!users.tempLinkData) users.tempLinkData = {};
+    users.tempLinkData[userId] = {
+        cityKey: cityKey,
+        cityName: cityName,
+        cityData: city
     };
 
+    // Переходим к выбору цен
+    users.userStates[userId] = 'waiting_for_prices_choice';
     saveUsers();
 
-    // Проверяем, является ли URL публичным
-    const isPublicUrl = !baseUrl.includes('localhost') && !baseUrl.includes('127.0.0.1');
-
-    const message = `🏙 ${city.name}\n\n` +
-        (city.address ? `📍 Адрес: ${city.address}\n` : '') +
-        (city.telegram ? `💬 Telegram: ${city.telegram}\n\n` : '\n') +
-        `🔗 Ваша персональная ссылка:\n${url}\n\n` +
-        `Сохраните эту ссылку для быстрого доступа!\n\n` +
-        `📊 Вы будете получать уведомления о всех заявках с этой ссылки.`;
-
-    if (isPublicUrl) {
-        bot.sendMessage(chatId, message, {
+    bot.sendMessage(chatId,
+        `✅ *Город найден: ${city.name}*\n\n` +
+        `💰 *Цены по умолчанию:*\n` +
+        `• Байкал: ${city.prices.baikal}₽/час\n` +
+        `• Тайга: ${city.prices.taiga}₽/час\n` +
+        `• Русская баня: ${city.prices.banya}₽/час\n\n` +
+        `Хотите использовать эти цены или указать свои?`,
+        {
+            parse_mode: 'Markdown',
             reply_markup: {
-                inline_keyboard: [[
-                    { text: '🌐 Открыть сайт', url: url }
-                ]]
+                inline_keyboard: [
+                    [{ text: '✅ Использовать стандартные', callback_data: 'use_default_prices' }],
+                    [{ text: '✏️ Указать свои цены', callback_data: 'use_custom_prices' }]
+                ]
             }
-        });
-    } else {
-        bot.sendMessage(chatId, message);
-    }
+        }
+    );
 });
 
 // Функция транслитерации

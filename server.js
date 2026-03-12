@@ -71,6 +71,14 @@ app.get('/:city', (req, res) => {
     const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const userAgent = req.headers['user-agent'] || 'Неизвестно';
 
+    // Трекинг посещений
+    if (!users.cityVisits) users.cityVisits = {};
+    if (!users.cityVisits[cityKey]) users.cityVisits[cityKey] = 0;
+    users.cityVisits[cityKey]++;
+
+    const fs = require('fs');
+    fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+
     // Уведомляем создателя ссылки о посещении
     const creatorId = users?.linkCreators?.[cityKey];
     if (bot && creatorId) {
@@ -93,7 +101,18 @@ app.get('/:city', (req, res) => {
 
     if (cities[cityKey]) {
         // Город есть в базе - используем его данные
-        const cityData = cities[cityKey];
+        let cityData = cities[cityKey];
+
+        // Проверяем, есть ли кастомные данные для этого города
+        if (users?.customCityData?.[cityKey]) {
+            const customData = users.customCityData[cityKey];
+            cityData = {
+                ...cityData,
+                prices: customData.prices || cityData.prices,
+                address: customData.address || cityData.address
+            };
+        }
+
         res.send(generateHTML(cityKey, cityData));
     } else {
         // Города нет в базе - используем данные по умолчанию с названием города
@@ -102,12 +121,23 @@ app.get('/:city', (req, res) => {
         // Получаем оригинальное русское название из сохраненных данных
         const russianName = users?.cityNames?.[cityKey] || capitalizeCity(cityKey);
 
-        const customCityData = {
+        let customCityData = {
             ...defaultCity,
             name: russianName,
             address: `г. ${russianName}, уточняйте адрес в Telegram`,
             coordinates: defaultCity.coordinates // Используем координаты по умолчанию
         };
+
+        // Проверяем, есть ли кастомные данные для этого города
+        if (users?.customCityData?.[cityKey]) {
+            const customData = users.customCityData[cityKey];
+            customCityData = {
+                ...customCityData,
+                prices: customData.prices || customCityData.prices,
+                address: customData.address || customCityData.address
+            };
+        }
+
         res.send(generateHTML(cityKey, customCityData));
     }
 });
@@ -219,6 +249,9 @@ function generateHTML(cityKey, cityData) {
     html = html.replace(/@SibirbanyaVitya/g, cityData.telegram);
     html = html.replace(/Премиальный центр отдыха в Тюмени/g, `Премиальный центр отдыха в ${cityData.name}`);
     html = html.replace(/Душа Сибири — Премиальный центр отдыха в Тюмени/g, `Душа Сибири — Премиальный центр отдыха в ${cityData.name}`);
+
+    // Замена в meta-тегах
+    html = html.replace(/сауна Тюмень, баня Тюмень, бассейн, SPA, отдых Тюмень/g, `сауна ${cityData.name}, баня ${cityData.name}, бассейн, SPA, отдых ${cityData.name}`);
 
     // Замена цен (обрабатываем оба формата: с "/час" и без)
     html = html.replace(/3500₽/g, `${cityData.prices.baikal}₽`);
