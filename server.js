@@ -216,7 +216,7 @@ function generateHTML(cityKey, cityData) {
 
     // Замена данных города
     html = html.replace(/г\. Тюмень, ул\. Садовая, 73/g, cityData.address);
-    html = html.replace(/@sosalhui/g, cityData.telegram);
+    html = html.replace(/@SibirbanyaVitya/g, cityData.telegram);
     html = html.replace(/Премиальный центр отдыха в Тюмени/g, `Премиальный центр отдыха в ${cityData.name}`);
     html = html.replace(/Душа Сибири — Премиальный центр отдыха в Тюмени/g, `Душа Сибири — Премиальный центр отдыха в ${cityData.name}`);
 
