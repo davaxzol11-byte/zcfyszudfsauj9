@@ -26,7 +26,7 @@
     "coordinates": { "lat": 48.025629, "lon": 38.616849 },
     "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3000, "taiga": 2500, "banya": 2000 }
-  }
+  },
   "ekaterinburg": {
     "name": "Екатеринбург",
     "address": "г. Екатеринбург, ул. Малышева, 15",
