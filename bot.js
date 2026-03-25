@@ -1,15 +1,21 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
+const path = require('path');
 
 const token = process.env.BOT_TOKEN;
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+const baseUrl = process.env.BASE_URL || 'https://sibirbanya.site';
 
-const bot = new TelegramBot(token, { polling: true });
+// Если bot.js запущен напрямую — включаем polling.
+// Если bot.js импортируется (например, из server.js) — polling выключаем,
+// иначе будет 409 Conflict (два getUpdates запроса одновременно).
+const bot = new TelegramBot(token, { polling: require.main === module });
 
 // Загрузка данных о городах и пользователях
-const cities = JSON.parse(fs.readFileSync('./cities.json', 'utf8'));
-let users = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
+const CITIES_FILE = path.join(__dirname, 'cities.json');
+const USERS_FILE = path.join(__dirname, 'users.json');
+const cities = JSON.parse(fs.readFileSync(CITIES_FILE, 'utf8'));
+let users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
 
 // Инициализация структур данных
 if (!users.workerStats) users.workerStats = {};
@@ -24,9 +30,25 @@ if (!users.broadcastSettings) users.broadcastSettings = {
     chatLink: 'https://t.me/your_workers_chat'
 };
 
+// Если bot.js запущен отдельным процессом (polling=true),
+// а сайт (server.js) крутится отдельным процессом и пишет users.json,
+// то в этом процессе данные будут "устаревать".
+// Это приводит к ошибке "анкеты/заявки нет" при нажатии inline-кнопок.
+// Поэтому подхватываем изменения users.json и обновляем объект in-place,
+// чтобы сохранялась ссылка на экспортируемый users.
+fs.watchFile(USERS_FILE, { interval: 1000 }, () => {
+    try {
+        const fresh = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
+        for (const k of Object.keys(users)) delete users[k];
+        Object.assign(users, fresh);
+    } catch (e) {
+        console.error('Ошибка авто-перезагрузки users.json:', e);
+    }
+});
+
 // Сохранение данных пользователей
 function saveUsers() {
-    fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
 // Получить или создать статистику работника
@@ -700,6 +722,13 @@ bot.on('callback_query', (query) => {
     const userId = query.from.id;
     const userName = query.from.username ? `@${query.from.username}` : query.from.first_name;
 
+    // Сохраняем username для поиска пользователей по @username
+    if (!users.usernames) users.usernames = {};
+    if (query.from.username) {
+        users.usernames[userId] = query.from.username;
+        saveUsers();
+    }
+
     // Главное меню
     if (data === 'main_menu') {
         // Сбрасываем состояние ожидания города
@@ -1297,6 +1326,40 @@ bot.on('callback_query', (query) => {
         return;
     }
 
+    // Поиск пользователя (админ)
+    if (data === 'search_user') {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        if (!users.userStates) users.userStates = {};
+        users.userStates[userId] = 'waiting_for_user_search';
+        saveUsers();
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId,
+            `🔎 *ПОИСК ПОЛЬЗОВАТЕЛЯ*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `Введите ID / @username / #tag:\n\n` +
+            `💡 _Примеры:_\n` +
+            `• \`7482384212\`\n` +
+            `• \`@username\`\n` +
+            `• \`#banshik-237114\`` ,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '❌ Отмена', callback_data: 'manage_users' }]
+                    ]
+                }
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
     // Показать резервации (админ)
     if (data === 'show_reservations') {
         if (!isAdmin(userId)) {
@@ -1409,6 +1472,123 @@ bot.on('callback_query', (query) => {
 
         // Обновляем список резерваций
         bot.emit('callback_query', { ...query, data: 'show_reservations' });
+        return;
+    }
+
+    // Toggle доступ (whitelist)
+    if (data.startsWith('toggle_access_')) {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const targetUserId = parseInt(data.replace('toggle_access_', ''));
+        if (!users.whitelist) users.whitelist = [];
+
+        if (users.whitelist.includes(targetUserId)) {
+            users.whitelist = users.whitelist.filter(id => id !== targetUserId);
+            saveUsers();
+            bot.answerCallbackQuery(query.id, { text: '✅ Доступ убран' });
+        } else {
+            users.whitelist.push(targetUserId);
+            saveUsers();
+            bot.answerCallbackQuery(query.id, { text: '✅ Доступ выдан' });
+        }
+
+        // Обновляем карточку
+        if (users.userStates?.[userId]?.state === 'editing_user') {
+            bot.sendMessage(chatId, '🔄 Обновлено. Нажмите “🔎 Новый поиск” чтобы посмотреть актуально.');
+        }
+        return;
+    }
+
+    // Toggle бан
+    if (data.startsWith('toggle_ban_')) {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const targetUserId = parseInt(data.replace('toggle_ban_', ''));
+        if (!users.banned) users.banned = [];
+
+        if (users.banned.includes(targetUserId)) {
+            users.banned = users.banned.filter(id => id !== targetUserId);
+            saveUsers();
+            bot.answerCallbackQuery(query.id, { text: '✅ Разбанен' });
+        } else {
+            users.banned.push(targetUserId);
+            // на всякий случай убираем из whitelist
+            if (users.whitelist) users.whitelist = users.whitelist.filter(id => id !== targetUserId);
+            saveUsers();
+            bot.answerCallbackQuery(query.id, { text: '✅ Забанен' });
+        }
+
+        if (users.userStates?.[userId]?.state === 'editing_user') {
+            bot.sendMessage(chatId, '🔄 Обновлено. Нажмите “🔎 Новый поиск” чтобы посмотреть актуально.');
+        }
+        return;
+    }
+
+    // Админ меняет тэг
+    if (data.startsWith('admin_change_tag_')) {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const targetUserId = parseInt(data.replace('admin_change_tag_', ''));
+        if (!users.userStates) users.userStates = {};
+        users.userStates[userId] = { state: 'waiting_for_admin_new_tag', targetUserId };
+        saveUsers();
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId,
+            `🏷 *ИЗМЕНИТЬ ТЭГ ПОЛЬЗОВАТЕЛЯ*\n\n` +
+            `ID: \`${targetUserId}\`\n\n` +
+            `Введите новый тэг (латиница/цифры/дефис):`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '❌ Отмена', callback_data: 'manage_users' }]
+                    ]
+                }
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
+        return;
+    }
+
+    // Админ меняет баланс
+    if (data.startsWith('admin_set_balance_')) {
+        if (!isAdmin(userId)) {
+            bot.answerCallbackQuery(query.id, { text: '❌ Доступно только админам' });
+            return;
+        }
+
+        const targetUserId = parseInt(data.replace('admin_set_balance_', ''));
+        if (!users.userStates) users.userStates = {};
+        users.userStates[userId] = { state: 'waiting_for_admin_new_balance', targetUserId };
+        saveUsers();
+
+        bot.deleteMessage(chatId, messageId).catch(() => {});
+        bot.sendMessage(chatId,
+            `💰 *ИЗМЕНИТЬ БАЛАНС*\n\n` +
+            `ID: \`${targetUserId}\`\n\n` +
+            `Введите новую сумму “К выплате” (число):`,
+            {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: '❌ Отмена', callback_data: 'manage_users' }]
+                    ]
+                }
+            }
+        );
+
+        bot.answerCallbackQuery(query.id);
         return;
     }
 
@@ -1669,6 +1849,7 @@ bot.on('callback_query', (query) => {
             parse_mode: 'Markdown',
             reply_markup: {
                 inline_keyboard: [
+                    [{ text: '🔎 Поиск пользователя', callback_data: 'search_user' }],
                     [{ text: '📋 Заявки', callback_data: 'show_pending' }],
                     [{ text: '🚫 Забаненные', callback_data: 'show_banned' }],
                     [{ text: '👮 Добавить модератора', callback_data: 'add_moderator' }],
@@ -2426,6 +2607,8 @@ bot.on('callback_query', (query) => {
             chat_id: chatId,
             message_id: messageId
         }).catch(err => {
+            // Это не критично: Telegram ругается, если разметка не изменилась.
+            if (err?.response?.body?.description?.includes('message is not modified')) return;
             console.error('Ошибка удаления кнопок:', err);
         });
 
@@ -2452,31 +2635,17 @@ bot.on('callback_query', (query) => {
 
         bot.answerCallbackQuery(query.id, { text: '✅ Заявка взята на отработку' });
 
-        // Уведомляем админов о том, кто взял заявку
-        users.admins.forEach(adminId => {
-            bot.sendMessage(adminId,
-                `🤝 *Заявку взял на отработку*\n\n` +
-                `━━━━━━━━━━━━━━━━━━━━\n` +
-                `👤 *Работник:* ${userName}\n` +
-                `🏙 *Город:* ${booking.cityName}\n` +
-                `👥 *Клиент:* ${booking.clientName}`,
-                { parse_mode: 'Markdown' }
-            ).catch(err => {
-                console.error('Ошибка уведомления админа:', err);
-            });
-        });
-
-        // Уведомляем создателя ссылки о том, что заявку взяли в работу
-        const creatorId = users.linkCreators?.[booking.cityKey];
+        // Уведомляем создателя ссылки (воркера), что заявку взяли в работу
+        const creatorId = booking.creatorId || users.linkCreators?.[booking.cityKey] || users.workerInfo?.[booking.cityKey]?.userId;
         if (creatorId && creatorId !== userId) {
+            // Без Markdown — чтобы не было лишних "звёздочек" и ошибок парсинга
             bot.sendMessage(creatorId,
-                `🤝 *Вашу заявку взяли в работу!*\n\n` +
+                `🤝 Вашу заявку взяли в работу!\n\n` +
                 `━━━━━━━━━━━━━━━━━━━━\n` +
-                `👤 *Работник:* ${userName}\n` +
-                `🏙 *Город:* ${booking.cityName}\n` +
-                `👥 *Клиент:* ${booking.clientName}\n` +
-                `🏔 *Сауна:* ${booking.saunaName}`,
-                { parse_mode: 'Markdown' }
+                `👤 Работник: ${userName}\n` +
+                `🏙 Город: ${booking.cityName}\n` +
+                `👥 Клиент: ${booking.clientName}\n` +
+                `🏔 Сауна: ${booking.saunaName}`
             ).catch(err => {
                 console.error('Ошибка уведомления создателя ссылки:', err);
             });
@@ -2532,6 +2701,8 @@ bot.on('callback_query', (query) => {
                 chat_id: chatId,
                 message_id: messageId
             }).catch(err => {
+                // Это не критично: Telegram ругается, если разметка не изменилась.
+                if (err?.response?.body?.description?.includes('message is not modified')) return;
                 console.error('Ошибка удаления кнопок:', err);
             });
 
@@ -2568,13 +2739,15 @@ bot.on('callback_query', (query) => {
                 chat_id: chatId,
                 message_id: messageId
             }).catch(err => {
+                // Это не критично: Telegram ругается, если разметка не изменилась.
+                if (err?.response?.body?.description?.includes('message is not modified')) return;
                 console.error('Ошибка удаления кнопок:', err);
             });
 
             bot.answerCallbackQuery(query.id, { text: '❌ Отмечено как не оплачено' });
 
             // Уведомляем создателя ссылки о результате с фото
-            const creatorId = users.linkCreators?.[booking.cityKey];
+            const creatorId = booking.creatorId || users.linkCreators?.[booking.cityKey] || users.workerInfo?.[booking.cityKey]?.userId;
             if (creatorId) {
                 const statusMessage = `❌ *Заявка не оплачена*\n\n` +
                     `━━━━━━━━━━━━━━━━━━━━\n` +
@@ -2787,7 +2960,8 @@ bot.on('message', (msg) => {
         const workerShare = Math.round(amount * 0.7);
 
         // Находим создателя ссылки (воркера)
-        const creatorId = users.linkCreators?.[booking.cityKey];
+        // Приоритет: creatorId, сохраненный в заявке → linkCreators → закрепленный воркер по городу
+        const creatorId = booking.creatorId || users.linkCreators?.[booking.cityKey] || users.workerInfo?.[booking.cityKey]?.userId;
 
         // Обновляем статистику создателя ссылки (воркера)
         if (creatorId) {
@@ -2835,6 +3009,136 @@ bot.on('message', (msg) => {
             });
         }
 
+        return;
+    }
+
+    // Поиск пользователя (админ)
+    if (users.userStates[userId] === 'waiting_for_user_search') {
+        const q = text.trim();
+        let targetUserId = null;
+
+        if (/^\d+$/.test(q)) {
+            targetUserId = parseInt(q);
+        } else {
+            const cleaned = q.replace(/^@/, '').replace(/^#/, '').toLowerCase();
+
+            // 1) Поиск по сохраненному username
+            for (const [uid, uname] of Object.entries(users.usernames || {})) {
+                if ((uname || '').toLowerCase() === cleaned) {
+                    targetUserId = parseInt(uid);
+                    break;
+                }
+            }
+
+            // 2) Поиск по тэгу
+            if (!targetUserId) {
+                for (const [uid, tag] of Object.entries(users.customTags || {})) {
+                    if ((tag || '').toLowerCase() === cleaned) {
+                        targetUserId = parseInt(uid);
+                        break;
+                    }
+                }
+            }
+
+            if (!targetUserId) {
+                bot.sendMessage(chatId, '❌ Пользователь не найден. Используйте ID / @username / #tag.');
+                return;
+            }
+        }
+
+        // Создаем базовые структуры, если их нет
+        if (!users.admins) users.admins = [];
+        if (!users.whitelist) users.whitelist = [];
+        if (!users.banned) users.banned = [];
+        if (!users.customTags) users.customTags = {};
+        if (!users.balances) users.balances = {};
+        if (!users.registrationDates) users.registrationDates = {};
+
+        if (!users.balances[targetUserId]) users.balances[targetUserId] = { available: 0, totalEarned: 0 };
+
+        const isUserAdmin = users.admins.includes(targetUserId);
+        const isUserWorker = users.whitelist.includes(targetUserId);
+        const isUserBanned = users.banned.includes(targetUserId);
+        const tag = users.customTags[targetUserId] || 'не задан';
+        const uname = users.usernames?.[targetUserId] ? `@${users.usernames[targetUserId]}` : 'нет';
+        const reg = users.registrationDates[targetUserId];
+        const bal = users.balances[targetUserId];
+
+        const message =
+            `👤 *ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `🆔 *ID:* \`${targetUserId}\`\n` +
+            `👤 *Username:* ${uname}\n` +
+            `🏷 *Тэг:* #${tag}\n` +
+            (reg ? `📅 *Регистрация:* ${new Date(reg).toLocaleString('ru-RU')}\n` : '') +
+            `\n👮 *Роли:* ${isUserAdmin ? 'Админ' : isUserWorker ? 'Воркер' : 'Нет доступа'}\n` +
+            `🚫 *Бан:* ${isUserBanned ? 'Да' : 'Нет'}\n` +
+            `\n💰 *Баланс:*\n` +
+            `• Доступно: ${Number(bal.available || 0).toLocaleString('ru-RU')} ₽\n` +
+            `• Всего: ${Number(bal.totalEarned || 0).toLocaleString('ru-RU')} ₽`;
+
+        users.userStates[userId] = { state: 'editing_user', targetUserId };
+        saveUsers();
+
+        const buttons = [
+            [
+                { text: isUserWorker ? '➖ Убрать доступ' : '➕ Дать доступ', callback_data: `toggle_access_${targetUserId}` },
+                { text: isUserBanned ? '✅ Разбан' : '🚫 Бан', callback_data: `toggle_ban_${targetUserId}` }
+            ],
+            [
+                { text: '🏷 Изменить тэг', callback_data: `admin_change_tag_${targetUserId}` },
+                { text: '💰 Изменить баланс', callback_data: `admin_set_balance_${targetUserId}` }
+            ],
+            [
+                { text: '🔎 Новый поиск', callback_data: 'search_user' },
+                { text: '👥 Назад', callback_data: 'manage_users' }
+            ]
+        ];
+
+        bot.sendMessage(chatId, message, { parse_mode: 'Markdown', reply_markup: { inline_keyboard: buttons } });
+        return;
+    }
+
+    // Обработка поиска воркера
+    if (users.userStates[userId] === 'waiting_for_worker_search') {
+        const isUserAdmin = users.admins?.includes(targetUserId);
+        const isUserWorker = users.whitelist?.includes(targetUserId);
+        const isUserBanned = users.banned?.includes(targetUserId);
+        const tag = users.customTags?.[targetUserId] || 'не задан';
+        const reg = users.registrationDates?.[targetUserId];
+        const bal = users.balances?.[targetUserId] || { available: 0, totalEarned: 0 };
+
+        const message =
+            `👤 *ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ*\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `🆔 *ID:* \`${targetUserId}\`\n` +
+            `🏷 *Тэг:* #${tag}\n` +
+            (reg ? `📅 *Регистрация:* ${new Date(reg).toLocaleString('ru-RU')}\n` : '') +
+            `\n👮 *Роли:* ${isUserAdmin ? 'Админ' : isUserWorker ? 'Воркер' : 'Нет доступа'}\n` +
+            `🚫 *Бан:* ${isUserBanned ? 'Да' : 'Нет'}\n` +
+            `\n💰 *Баланс:*\n` +
+            `• Доступно: ${Number(bal.available || 0).toLocaleString('ru-RU')} ₽\n` +
+            `• Всего: ${Number(bal.totalEarned || 0).toLocaleString('ru-RU')} ₽`;
+
+        users.userStates[userId] = { state: 'editing_user', targetUserId };
+        saveUsers();
+
+        const buttons = [
+            [
+                { text: isUserWorker ? '➖ Убрать доступ' : '➕ Дать доступ', callback_data: `toggle_access_${targetUserId}` },
+                { text: isUserBanned ? '✅ Разбан' : '🚫 Бан', callback_data: `toggle_ban_${targetUserId}` }
+            ],
+            [
+                { text: '🏷 Изменить тэг', callback_data: `admin_change_tag_${targetUserId}` },
+                { text: '💰 Изменить баланс', callback_data: `admin_set_balance_${targetUserId}` }
+            ],
+            [
+                { text: '🔎 Новый поиск', callback_data: 'search_user' },
+                { text: '👥 Назад', callback_data: 'manage_users' }
+            ]
+        ];
+
+        bot.sendMessage(chatId, message, { parse_mode: 'Markdown', reply_markup: { inline_keyboard: buttons } });
         return;
     }
 
@@ -2993,6 +3297,52 @@ bot.on('message', (msg) => {
             }
         );
 
+        return;
+    }
+
+    // Админ вводит новый тэг для пользователя
+    if (users.userStates[userId] && typeof users.userStates[userId] === 'object' && users.userStates[userId].state === 'waiting_for_admin_new_tag') {
+        const targetUserId = users.userStates[userId].targetUserId;
+        const newTag = text.trim().toLowerCase().replace(/^#/, '');
+
+        if (!/^[a-z0-9-]+$/.test(newTag) || newTag.length < 3 || newTag.length > 20) {
+            bot.sendMessage(chatId, '❌ Неверный тэг. Разрешено: латиница/цифры/дефис. Длина 3-20.');
+            return;
+        }
+
+        if (!users.customTags) users.customTags = {};
+        const tagExists = Object.entries(users.customTags).some(([uid, tag]) => parseInt(uid) !== targetUserId && tag === newTag);
+        if (tagExists) {
+            bot.sendMessage(chatId, '❌ Этот тэг уже занят.');
+            return;
+        }
+
+        users.customTags[targetUserId] = newTag;
+        delete users.userStates[userId];
+        saveUsers();
+
+        bot.sendMessage(chatId, `✅ Тэг обновлён для ID ${targetUserId}: #${newTag}`);
+        return;
+    }
+
+    // Админ вводит новый баланс для пользователя
+    if (users.userStates[userId] && typeof users.userStates[userId] === 'object' && users.userStates[userId].state === 'waiting_for_admin_new_balance') {
+        const targetUserId = users.userStates[userId].targetUserId;
+        const amount = parseFloat(String(text).replace(',', '.'));
+
+        if (isNaN(amount) || amount < 0) {
+            bot.sendMessage(chatId, '❌ Неверная сумма. Введите число 0 или больше.');
+            return;
+        }
+
+        if (!users.balances) users.balances = {};
+        if (!users.balances[targetUserId]) users.balances[targetUserId] = { available: 0, totalEarned: 0 };
+        users.balances[targetUserId].available = amount;
+
+        delete users.userStates[userId];
+        saveUsers();
+
+        bot.sendMessage(chatId, `✅ Баланс “К выплате” обновлён для ID ${targetUserId}: ${amount.toLocaleString('ru-RU')} ₽`);
         return;
     }
 
@@ -3474,7 +3824,7 @@ function transliterate(text) {
 }
 
 // Экспорт бота для использования в server.js
-module.exports = { bot, users };
+module.exports = { bot, users, saveUsers };
 
 // Запуск бота только если файл запущен напрямую
 if (require.main === module) {

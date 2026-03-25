@@ -1,28 +1,285 @@
 {
   "admins": [
-    7482384212
+    7482384212,
+    7445951273
   ],
   "whitelist": [
-    7482384212
+    7482384212,
+    8583000271,
+    7445951273
   ],
   "pending": [],
   "banned": [],
-  "workerStats": {},
-  "bookings": {},
-  "linkCreators": {},
-  "cityNames": {},
-  "workerInfo": {},
-  "registrationDates": {
-    "7482384212": "2026-03-11T00:00:00.000Z"
+  "workerStats": {
+    "7482384212": {
+      "total": 2,
+      "completed": 1,
+      "failed": 0,
+      "totalEarned": 86
+    },
+    "7445951273": {
+      "total": 0,
+      "completed": 0,
+      "failed": 0
+    },
+    "8583000271": {
+      "total": 0,
+      "completed": 0,
+      "failed": 0
+    }
   },
-  "userStates": {},
+  "bookings": {
+    "moscow_1773603866879": {
+      "cityKey": "moscow",
+      "cityName": "Москва",
+      "clientName": "Алексей",
+      "clientTelegram": "@kartaviychmo",
+      "sauna": "baikal",
+      "saunaName": "Байкал",
+      "comment": "фыв",
+      "timestamp": 1773603866879,
+      "takenBy": [],
+      "status": "pending",
+      "completedBy": null
+    },
+    "moscow_1773605182491": {
+      "cityKey": "moscow",
+      "cityName": "Москва",
+      "clientName": "Алексей",
+      "clientTelegram": "@kartaviychmo",
+      "sauna": "taiga",
+      "saunaName": "Тайга",
+      "comment": "",
+      "timestamp": 1773605182491,
+      "takenBy": [],
+      "status": "pending",
+      "completedBy": null
+    },
+    "moscow_1773605423105": {
+      "cityKey": "moscow",
+      "cityName": "Москва",
+      "clientName": "Test User",
+      "clientTelegram": "@test_user",
+      "sauna": "baikal",
+      "saunaName": "Байкал",
+      "comment": "test_comment",
+      "timestamp": 1773605423105,
+      "takenBy": [],
+      "status": "pending",
+      "completedBy": null
+    },
+    "moscow_1773605445332": {
+      "cityKey": "moscow",
+      "cityName": "Москва",
+      "clientName": "ыфвфывф",
+      "clientTelegram": "фывфыв",
+      "sauna": "baikal",
+      "saunaName": "Байкал",
+      "comment": "фывфыв",
+      "timestamp": 1773605445332,
+      "takenBy": [
+        {
+          "userId": 7482384212,
+          "userName": "@BusinessYMB",
+          "timestamp": 1773605725647
+        }
+      ],
+      "status": "completed",
+      "completedBy": {
+        "userId": 7482384212,
+        "userName": "@BusinessYMB",
+        "timestamp": 1773605756813
+      },
+      "amount": 123,
+      "workerShare": 86
+    },
+    "moscow_1773606706749": {
+      "cityKey": "moscow",
+      "cityName": "Москва",
+      "creatorId": 8583000271,
+      "clientName": "Test2",
+      "clientTelegram": "@t2",
+      "sauna": "taiga",
+      "saunaName": "Тайга",
+      "comment": "",
+      "timestamp": 1773606706750,
+      "takenBy": [],
+      "status": "pending",
+      "completedBy": null
+    },
+    "tyumen_1773607405706": {
+      "cityKey": "tyumen",
+      "cityName": "Тюмень",
+      "creatorId": 7482384212,
+      "clientName": "ыфвфывф",
+      "clientTelegram": "фывфыв",
+      "sauna": "taiga",
+      "saunaName": "Тайга",
+      "comment": "",
+      "timestamp": 1773607405706,
+      "takenBy": [
+        {
+          "userId": 7482384212,
+          "userName": "@BusinessYMB",
+          "timestamp": 1773607414134
+        }
+      ],
+      "status": "completed",
+      "completedBy": {
+        "userId": 7482384212,
+        "userName": "@BusinessYMB",
+        "timestamp": 1773607421813
+      },
+      "amount": 123,
+      "workerShare": 86
+    }
+  },
+  "linkCreators": {
+    "novosibirsk": 8583000271,
+    "moscow": 8583000271,
+    "kazan": 7482384212,
+    "tyumen": 7482384212
+  },
+  "cityNames": {
+    "moscow": "москва",
+    "novosibirsk": "Новосибирск",
+    "kazan": "казань",
+    "tyumen": "Тюмень"
+  },
+  "workerInfo": {
+    "moscow": {
+      "userId": 8583000271,
+      "name": "#banshik-880958",
+      "timestamp": 1773606128060
+    },
+    "novosibirsk": {
+      "userId": 8583000271,
+      "name": "ID: 8583000271",
+      "timestamp": 1773605658042
+    },
+    "kazan": {
+      "userId": 7482384212,
+      "name": "#banshik-404362",
+      "timestamp": 1773606426998
+    },
+    "tyumen": {
+      "userId": 7482384212,
+      "name": "#banshik-404362",
+      "timestamp": 1773607392820
+    }
+  },
+  "registrationDates": {
+    "7482384212": "2026-03-11T00:00:00.000Z",
+    "7445951273": "2026-03-12T18:28:55.568Z",
+    "8583000271": "2026-03-15T20:16:04.921Z"
+  },
+  "userStates": {
+    "7815542511": "waiting_for_application_source"
+  },
   "broadcastSettings": {
     "trainingLink": "https://t.me/+X-Aso8evvSY5MGJi",
     "rulesLink": "https://t.me/+X-Aso8evvSY5MGJi",
     "paymentsLink": "https://t.me/+X-Aso8evvSY5MGJi",
     "chatLink": "https://t.me/+X-Aso8evvSY5MGJi"
   },
-  "customTags": {},
-  "balances": {},
-  "withdrawalRequests": []
+  "customTags": {
+    "7482384212": "banshik-404362",
+    "7445951273": "banshik-237114",
+    "8583000271": "banshik-880958"
+  },
+  "balances": {
+    "7445951273": {
+      "available": 0,
+      "totalEarned": 0
+    },
+    "8583000271": {
+      "available": 0,
+      "totalEarned": 0
+    },
+    "7482384212": {
+      "available": 86,
+      "totalEarned": 86
+    }
+  },
+  "withdrawalRequests": [],
+  "cityReservations": {
+    "novosibirsk": {
+      "userId": 8583000271,
+      "cityName": "Новосибирск",
+      "timestamp": 1773605656600
+    },
+    "moscow": {
+      "userId": 8583000271,
+      "cityName": "москва",
+      "timestamp": 1773606126479
+    },
+    "kazan": {
+      "userId": 7482384212,
+      "cityName": "казань",
+      "timestamp": 1773606425598
+    },
+    "tyumen": {
+      "userId": 7482384212,
+      "cityName": "Тюмень",
+      "timestamp": 1773607390721
+    }
+  },
+  "applications": {
+    "8583000271": {
+      "source": "хуй",
+      "experience": "хуй",
+      "about": "ххуй",
+      "timestamp": 1773339963177
+    },
+    "7445951273": {
+      "source": "12121",
+      "experience": "1212",
+      "about": "1212",
+      "timestamp": 1773340108767
+    }
+  },
+  "tempLinkData": {},
+  "customCityData": {
+    "novosibirsk": {
+      "prices": {
+        "baikal": 3800,
+        "taiga": 3300,
+        "banya": 2800
+      },
+      "address": "г. Новосибирск, ул. Ленина, 5"
+    },
+    "moscow": {
+      "prices": {
+        "baikal": 5000,
+        "taiga": 4500,
+        "banya": 4000
+      },
+      "address": "г. Москва, ул. Примерная, 1"
+    },
+    "kazan": {
+      "prices": {
+        "baikal": 3500,
+        "taiga": 3000,
+        "banya": 2500
+      },
+      "address": "г. Казань, ул. Баумана, 20"
+    },
+    "tyumen": {
+      "prices": {
+        "baikal": 3500,
+        "taiga": 3000,
+        "banya": 2500
+      },
+      "address": "г. Тюмень, ул. Садовая, 73"
+    }
+  },
+  "cityVisits": {
+    "favicon.ico": 5,
+    "moscow": 4,
+    "tyumen": 1
+  },
+  "usernames": {
+    "8583000271": "xcode3",
+    "7482384212": "BusinessYMB"
+  }
 }

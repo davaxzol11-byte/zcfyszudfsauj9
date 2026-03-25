@@ -3,6 +3,9 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
+const CITIES_FILE = path.join(__dirname, 'cities.json');
+const USERS_FILE = path.join(__dirname, 'users.json');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -11,14 +14,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Загрузка данных о городах
-const cities = JSON.parse(fs.readFileSync('./cities.json', 'utf8'));
+const cities = JSON.parse(fs.readFileSync(CITIES_FILE, 'utf8'));
 
 // Импорт бота для отправки уведомлений
-let bot, users;
+let bot, users, saveUsers;
 try {
     const botModule = require('./bot.js');
     bot = botModule.bot;
     users = botModule.users;
+    saveUsers = botModule.saveUsers;
 } catch (err) {
     console.log('⚠️ Бот не загружен, уведомления не будут отправляться');
 }
@@ -68,6 +72,12 @@ app.get('/', (req, res) => {
 // Динамические страницы городов
 app.get('/:city', (req, res) => {
     const cityKey = req.params.city.toLowerCase();
+
+    // Браузер запрашивает favicon автоматически — это не посещение города.
+    if (cityKey === 'favicon.ico') {
+        return res.status(204).end();
+    }
+
     const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const userAgent = req.headers['user-agent'] || 'Неизвестно';
 
@@ -76,12 +86,22 @@ app.get('/:city', (req, res) => {
     if (!users.cityVisits[cityKey]) users.cityVisits[cityKey] = 0;
     users.cityVisits[cityKey]++;
 
-    const fs = require('fs');
-    fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+    // Сохраняем визиты
+    if (saveUsers) saveUsers();
+    else fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 
     // Уведомляем создателя ссылки о посещении
-    const creatorId = users?.linkCreators?.[cityKey];
-    if (bot && creatorId) {
+    // 1) приоритет — явный создатель ссылки
+    // 2) фолбэк — воркер, закрепленный за городом (если ссылка создавалась давно/данные потерялись)
+    const creatorId = users?.linkCreators?.[cityKey] || users?.workerInfo?.[cityKey]?.userId;
+
+    // По умолчанию посещения уходят только воркеру (создателю ссылки).
+    // Для локальной отладки можно включить фолбэк на админа через env.
+    const fallbackToAdmin = String(process.env.VISITS_FALLBACK_TO_ADMIN || '').toLowerCase() === 'true';
+    const adminChatId = process.env.ADMIN_CHAT_ID || -3749513674;
+    const visitRecipientId = creatorId || (fallbackToAdmin ? adminChatId : null);
+
+    if (bot && visitRecipientId) {
         const cityData = cities[cityKey] || { name: users?.cityNames?.[cityKey] || capitalizeCity(cityKey) };
 
         // Парсим User-Agent для получения информации о браузере и устройстве
@@ -94,7 +114,7 @@ app.get('/:city', (req, res) => {
             `🌐 Браузер: ${deviceInfo.browser}\n` +
             `🕐 Время: ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}`;
 
-        bot.sendMessage(creatorId, visitMessage).catch(err => {
+        bot.sendMessage(visitRecipientId, visitMessage).catch(err => {
             console.error('Ошибка отправки уведомления о посещении:', err);
         });
     }
@@ -152,7 +172,9 @@ app.post('/api/booking/:city', (req, res) => {
     const cityData = cities[cityKey] || { name: users?.cityNames?.[cityKey] || capitalizeCity(cityKey) };
 
     // Находим создателя ссылки для этого города
-    const creatorId = users?.linkCreators?.[cityKey];
+    // ВАЖНО: linkCreators может быть пустым (например, если users.json переносили/перезатирали).
+    // Поэтому делаем фолбэк на закрепленного воркера по городу.
+    const creatorId = users?.linkCreators?.[cityKey] || users?.workerInfo?.[cityKey]?.userId;
 
     if (bot) {
         const saunaNames = {
@@ -169,6 +191,7 @@ app.post('/api/booking/:city', (req, res) => {
         users.bookings[bookingId] = {
             cityKey,
             cityName: cityData.name,
+            creatorId: creatorId || null,
             clientName: name,
             clientTelegram: telegram,
             sauna,
@@ -181,8 +204,8 @@ app.post('/api/booking/:city', (req, res) => {
         };
 
         // Сохраняем изменения
-        const fs = require('fs');
-        fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+        if (saveUsers) saveUsers();
+        else fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 
         // Отправляем уведомление создателю ссылки (воркеру)
         if (creatorId) {
@@ -205,20 +228,25 @@ app.post('/api/booking/:city', (req, res) => {
         const adminChatId = process.env.ADMIN_CHAT_ID || -3749513674;
 
         const workerInfo = users?.workerInfo?.[cityKey];
-        const workerText = workerInfo ? `👨‍💼 *Работник:* ${workerInfo.name}\n` : '';
+        const workerText = workerInfo ? `👨‍💼 Работник: ${workerInfo.name}\n` : '';
 
-        const adminMessage = `🔔 *Новая заявка на бронирование!*\n\n` +
+        // ВАЖНО: это сообщение может содержать ввод клиента, поэтому отправляем как plain text (без Markdown).
+        const adminMessage = `🔔 Новая заявка на бронирование!\n\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
-            `🏙 *Город:* ${cityData.name}\n` +
-            `👤 *Имя:* ${name}\n` +
-            `💬 *Telegram:* ${telegram}\n` +
-            `🏔 *Сауна:* ${saunaNames[sauna] || sauna}\n` +
-            (comment ? `📝 *Комментарий:* ${comment}\n` : '') +
+            `🏙 Город: ${cityData.name}\n` +
+            `👤 Имя: ${name}\n` +
+            `💬 Telegram: ${telegram}\n` +
+            `🏔 Сауна: ${saunaNames[sauna] || sauna}\n` +
+            (comment ? `📝 Комментарий: ${comment}\n` : '') +
             (workerInfo ? `${workerText}` : '') +
-            `\n🔗 *Ссылка:* ${process.env.BASE_URL}/${cityKey}`;
+            `\n🔗 Ссылка: ${process.env.BASE_URL}/${cityKey}`;
 
+        // Также продублируем админу уведомление о посещении (если нужно): можно включить позже отдельным флагом.
+
+        // ВАЖНО: тут есть пользовательский ввод (имя/телеграм/коммент).
+        // Markdown часто ломает отправку (400 can't parse entities), из-за чего "отстук" не приходит вообще.
+        // Поэтому отправляем без parse_mode.
         bot.sendMessage(adminChatId, adminMessage, {
-            parse_mode: 'Markdown',
             reply_markup: {
                 inline_keyboard: [[
                     { text: '🤝 Взял на отработку', callback_data: `take_${bookingId}` }

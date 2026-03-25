@@ -20,13 +20,6 @@
     "telegram": "@SibirbanyaVitya",
     "prices": { "baikal": 3800, "taiga": 3300, "banya": 2800 }
   },
-  "torez": {
-    "name": "Торез",
-    "address": "г. Торез, ул. Центральная, 1",
-    "coordinates": { "lat": 48.025629, "lon": 38.616849 },
-    "telegram": "@SibirbanyaVitya",
-    "prices": { "baikal": 3000, "taiga": 2500, "banya": 2000 }
-  },
   "ekaterinburg": {
     "name": "Екатеринбург",
     "address": "г. Екатеринбург, ул. Малышева, 15",
