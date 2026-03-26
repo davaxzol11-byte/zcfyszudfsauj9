@@ -136,7 +136,7 @@
   },
   "linkCreators": {
     "novosibirsk": 8583000271,
-    "moscow": 8583000271,
+    "moscow": 7482384212,
     "kazan": 7482384212,
     "tyumen": 7482384212
   },
@@ -148,9 +148,9 @@
   },
   "workerInfo": {
     "moscow": {
-      "userId": 8583000271,
-      "name": "#banshik-880958",
-      "timestamp": 1773606128060
+      "userId": 7482384212,
+      "name": "#banshik-404362",
+      "timestamp": 1774543236935
     },
     "novosibirsk": {
       "userId": 8583000271,
@@ -209,19 +209,9 @@
       "timestamp": 1773605656600
     },
     "moscow": {
-      "userId": 8583000271,
+      "userId": 7482384212,
       "cityName": "москва",
-      "timestamp": 1773606126479
-    },
-    "kazan": {
-      "userId": 7482384212,
-      "cityName": "казань",
-      "timestamp": 1773606425598
-    },
-    "tyumen": {
-      "userId": 7482384212,
-      "cityName": "Тюмень",
-      "timestamp": 1773607390721
+      "timestamp": 1774543235114
     }
   },
   "applications": {
